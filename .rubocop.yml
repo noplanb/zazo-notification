@@ -1,0 +1,13 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  RunRailsCops: true
+  Include:
+    - '**/Gemfile'
+    - '**/Rakefile'
+    - '**/Guardfile'
+  Exclude:
+   - 'bin/*'
+   - 'db/seeds.rb'
+   - 'db/schema.rb'
+   - 'vendor/bundle/**/*'

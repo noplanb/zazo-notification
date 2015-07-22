@@ -1,0 +1,31 @@
+AWS_REGION: us-west-1
+AWS_ACCESS_KEY_ID:
+AWS_SECRET_ACCESS_KEY:
+
+secret_key_base:
+
+db_host:
+db_name: zazo
+db_password:
+db_port: '3306'
+db_username:
+db_pool: '10'
+
+twilio_from_number: '+16503766005'
+twilio_ssid:
+twilio_to_number: '+16502453537'
+twilio_token:
+
+rollbar_access_token:
+newrelic_license_key:
+newrelic_api_key:
+
+test:
+  db_name: zazo_test
+
+production:
+  secret_key_base:
+  db_host:
+  db_name:
+  db_password:
+  db_username:
