@@ -5,6 +5,8 @@ box: zazo/rails
 # http://devcenter.wercker.com/docs/services/index.html
 services:
   - id: mysql
+    tag: 5.6
+    # cmd:
     env:
       MYSQL_ROOT_PASSWORD: zazo888secret
 
@@ -18,9 +20,11 @@ build:
   steps:
     - asux/bundle-install@1.1.8:
         gemfile: config/Gemfile
+        path: /usr/local/bundle
+        without: development production
     - script:
-        name: set up db
-        code: rake db:schema:load RAILS_ENV=test
+        name: db setup
+        code: rake db:setup RAILS_ENV=test
     - script:
         name: create rspec and coverage dir
         code: mkdir -p $WERCKER_REPORT_ARTIFACTS_DIR/rspec $WERCKER_REPORT_ARTIFACTS_DIR/coverage

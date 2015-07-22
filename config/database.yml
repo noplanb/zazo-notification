@@ -2,23 +2,17 @@ default: &default
   adapter: mysql2
   encoding: utf8
   collation: utf8_unicode_ci
-  database: <%= Figaro.env.db_name || ENV['MYSQL_ENV_MYSQL_DATABASE'] %>
-  username: <%= Figaro.env.db_username || ENV['MYSQL_ENV_MYSQL_USER'] %>
-  password: <%= Figaro.env.db_password || ENV['MYSQL_ENV_MYSQL_PASSWORD']%>
-  host: <%= Figaro.env.db_host || ENV['MYSQL_PORT_3306_TCP_ADDR'] %>
-  port: <%= Figaro.env.db_port || ENV['MYSQL_PORT_3306_TCP_PORT'] %>
+  database: <%= ENV['MYSQL_ENV_MYSQL_DATABASE'] || Figaro.env.db_name %>
+  username: <%= ENV['MYSQL_ENV_MYSQL_USER'] || Figaro.env.db_username %>
+  password: <%= ENV['MYSQL_ENV_MYSQL_PASSWORD'] || Figaro.env.db_password || ENV['MYSQL_ENV_MYSQL_ROOT_PASSWORD'] %>
+  host: <%= ENV['MYSQL_PORT_3306_TCP_ADDR'] || Figaro.env.db_host %>
+  port: <%= ENV['MYSQL_PORT_3306_TCP_PORT'] || Figaro.env.db_port %>
   pool: <%= Figaro.env.db_pool || 10 %>
 
 development:
   <<: *default
 
 test:
-  <<: *default
-
-playground:
-  <<: *default
-
-staging:
   <<: *default
 
 production:
