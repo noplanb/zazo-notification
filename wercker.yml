@@ -6,7 +6,6 @@ box: zazo/rails
 services:
   - id: mysql
     tag: 5.6
-    # cmd:
     env:
       MYSQL_ROOT_PASSWORD: zazo888secret
       MYSQL_DATABASE: zazo_test
