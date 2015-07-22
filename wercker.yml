@@ -9,6 +9,7 @@ services:
     # cmd:
     env:
       MYSQL_ROOT_PASSWORD: zazo888secret
+      MYSQL_DATABASE: zazo_test
 
 # This is the build pipeline. Pipelines are the core of wercker
 # Read more about pipelines on our dev center
@@ -24,7 +25,7 @@ build:
         without: development production
     - script:
         name: db setup
-        code: rake db:setup RAILS_ENV=test
+        code: rake db:schema:load RAILS_ENV=test
     - script:
         name: create rspec and coverage dir
         code: mkdir -p $WERCKER_REPORT_ARTIFACTS_DIR/rspec $WERCKER_REPORT_ARTIFACTS_DIR/coverage
