@@ -1,17 +1,12 @@
 # This references the default Ruby container from
 # the Docker Hub.
-# https://registry.hub.docker.com/_/ruby/
-# If you want to use a specific version you would use a tag:
-# ruby:2.2.2
 box: zazo/rails
 # You can also use services such as databases. Read more on our dev center:
 # http://devcenter.wercker.com/docs/services/index.html
 services:
-  - mysql
-  # http://devcenter.wercker.com/docs/services/postgresql.html
-
-  # - mongodb
-  # http://devcenter.wercker.com/docs/services/mongodb.html
+  - id: mysql
+    env:
+      MYSQL_ROOT_PASSWORD: zazo888secret
 
 # This is the build pipeline. Pipelines are the core of wercker
 # Read more about pipelines on our dev center
@@ -23,7 +18,6 @@ build:
   steps:
     - asux/bundle-install@1.1.8:
         gemfile: config/Gemfile
-    - rails-database-yml
     - script:
         name: set up db
         code: rake db:schema:load RAILS_ENV=test
