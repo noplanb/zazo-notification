@@ -23,9 +23,6 @@ build:
         path: /usr/local/bundle
         without: development production
     - script:
-        name: db setup
-        code: rake db:schema:load RAILS_ENV=test
-    - script:
         name: create rspec and coverage dir
         code: mkdir -p $WERCKER_REPORT_ARTIFACTS_DIR/rspec $WERCKER_REPORT_ARTIFACTS_DIR/coverage
     - script:
