@@ -28,18 +28,22 @@ build:
     - script:
         name: rspec
         code: rspec
-    # - script:
-    #     name: dredd
-    #     code: rake dredd > $WERCKER_REPORT_ARTIFACTS_DIR/dredd.txt
     - script:
-        name: aglio generate
-        code: rake aglio:generate
+        name: dredd
+        code: rake dredd || true &2> $WERCKER_REPORT_ARTIFACTS_DIR/dredd.txt
   after-steps:
     - asux/pretty-slack-notify:
         webhook_url: $slack_url
         channel: devops
 deploy:
   steps:
+    - asux/bundle-install@1.1.8:
+        gemfile: config/Gemfile
+        path: /usr/local/bundle
+        without: development production
+    - script:
+        name: aglio generate
+        code: rake aglio:generate
     - asux/elastic-beanstalk-deploy:
         key: $AWS_ACCESS_KEY_ID
         secret: $AWS_SECRET_ACCESS_KEY
