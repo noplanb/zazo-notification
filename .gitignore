@@ -29,6 +29,8 @@ pickle-email-*.html
 /vendor/assets/bower_components
 *.bowerrc
 bower.json
+node_modules
+npm-debug.log
 
 # Ignore pow environment settings
 # .powenv

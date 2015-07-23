@@ -110,6 +110,9 @@ GEM
     guard-rails (0.7.1)
       guard (~> 2.11)
       guard-compat (~> 1.0)
+    guard-rake (1.0.0)
+      guard
+      rake
     guard-rspec (4.6.2)
       guard (~> 2.1)
       guard-compat (~> 1.1)
@@ -138,7 +141,6 @@ GEM
     minitest (5.7.0)
     multi_json (1.11.0)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
     nenv (0.2.0)
     newrelic_rpm (3.11.2.286)
     nokogiri (1.6.6.2)
@@ -311,10 +313,10 @@ DEPENDENCIES
   guard-bundler
   guard-pow
   guard-rails
+  guard-rake
   guard-rspec
   guard-rubocop
   launchy
-  mysql2
   newrelic_rpm
   pry-byebug
   pry-rails

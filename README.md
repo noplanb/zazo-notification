@@ -4,7 +4,6 @@
 
 * [Rails](http://rubyonrails.org) web-framework.
 * [Rails API](https://github.com/rails-api/rails-api) gem.
-* [MySQL](http://mysql.org) for data storage.
 * [Twilio](https://twilio.com) for verification with code.
 * [Rollbar](https://rollbar.com) for errors.
 * [Wercker](http://wercker.com) for CI.
@@ -17,11 +16,11 @@
 
         cp config/application.yml.example config/application.yml
 
-2. Prepare database:
+2. Install npm packages for development:
 
-        bin/rake db:migrate
+        npm install --global dredd aglio
 
-3. Then run server:
+2. Then run server:
 
         bin/rails s
 
@@ -33,3 +32,20 @@
 ## Specs
 
     bin/rake spec
+
+## Dredd
+
+    bin/rake dredd
+
+## API documentation
+
+API Blueprint documentation stored in [apiary.apib](./apiary.apib).
+The HTML formatted version generated to [public/index.html](./public/index.html).
+
+To generate `public/index.html` run:
+
+    bin/rake aglio:generate
+
+or for *slate*
+
+    bin/rake aglio:generate[slate]

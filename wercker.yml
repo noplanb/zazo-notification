@@ -28,6 +28,12 @@ build:
     - script:
         name: rspec
         code: rspec
+    # - script:
+    #     name: dredd
+    #     code: rake dredd > $WERCKER_REPORT_ARTIFACTS_DIR/dredd.txt
+    - script:
+        name: aglio generate
+        code: rake aglio:generate
   after-steps:
     - asux/pretty-slack-notify:
         webhook_url: $slack_url

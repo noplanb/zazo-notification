@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2.3'
 gem 'rails-api'
-gem 'mysql2'
 gem 'puma'
 gem 'figaro', github: 'fny/figaro', branch: 'elastic-beanstalk-support'
 gem 'pry-rails'
@@ -33,6 +32,7 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'guard-pow', require: false
+  gem 'guard-rake'
   gem 'terminal-notifier-guard'
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false

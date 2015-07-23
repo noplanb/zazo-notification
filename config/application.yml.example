@@ -2,14 +2,8 @@ AWS_REGION: us-west-1
 AWS_ACCESS_KEY_ID:
 AWS_SECRET_ACCESS_KEY:
 
+api_endpoint: http://zazo-notification.dev
 secret_key_base:
-
-db_host:
-db_name: zazo
-db_password:
-db_port: '3306'
-db_username:
-db_pool: '10'
 
 twilio_from_number: '+16503766005'
 twilio_ssid:
@@ -21,11 +15,7 @@ newrelic_license_key:
 newrelic_api_key:
 
 test:
-  db_name: zazo_test
+  api_endpoint: http://localhost:8000
 
 production:
   secret_key_base:
-  db_host:
-  db_name:
-  db_password:
-  db_username:

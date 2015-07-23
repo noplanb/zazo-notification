@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://notification.zazoapp.com/
+HOST: http://notification.zazoapp.com
 
 # Zazo Notification
 
@@ -9,7 +9,7 @@ The default mehtod is **HTTP Digest** with service's username and token.
 
 The **HTTP Basic** will work for _development_ environment.
 
-# Notifications [/api/v1/notifications]
+## Failure
 
 If parameters is invalid:
 
@@ -19,12 +19,11 @@ If parameters is invalid:
 
             {
                 "status": "failed",
-                "errors":
-                    [
-                        {
-                            "text": "must be present"
-                        }
-                    ],
+                "errors": [
+                    {
+                      "text": "must be present"
+                    }
+                ],
                 "original_errors": null
             }
 
@@ -36,24 +35,22 @@ On backend service error:
 
             {
                 "status": "failed",
-                "errors":
-                    [
-                        {
-                            "Twilio error": "'To' number is not a valid mobile number"
-                        }
-                    ],
-                "original_errors":
-                    [
-                        {
-                            "code": 21614,
-                            "message": "'To' number is not a valid mobile number",
-                            "more_info": "https://www.twilio.com/docs/errors/21614",
-                            "status": 400
-                        }
-                    ]
+                "errors": [
+                    {
+                      "Twilio error": "'To' number is not a valid mobile number"
+                    }
+                ],
+                "original_errors": [
+                    {
+                      "code": 21614,
+                      "message": "'To' number is not a valid mobile number",
+                      "more_info": "https://www.twilio.com/docs/errors/21614",
+                      "status": 400
+                    }
+               ]
             }
-            
-## List of available notifications [GET]
+
+### List of available notifications [GET /api/v1/notifications]
 
 + Response 200 (application/json)
 
@@ -64,11 +61,14 @@ On backend service error:
                     "descriptions": "SMS send via Twilio",
                     "required_params": ["mobile_number", "text"]
                 }
-            ]
+            ],
+            "meta": {
+                "total": 1
+            }
         }
 
 
-## SMS [POST /api/v1/notifications/sms]
+### SMS [POST /api/v1/notifications/sms]
 
 Send SMS via Twilio service.
 
@@ -81,41 +81,39 @@ Send SMS via Twilio service.
 + Request (application/json)
 
     + Body
-        
+
             {
                 "mobile_number": "+380939523746",
                 "body": "Hello from Zazo!"
             }
-            
+
 + Response 200 (application/json)
 
     + Body
-    
+
             {
                 "status": "success",
-                "original_response:
-                    {
-                        "sid": "SM272eb583ba9f40859abd816e97958bbf",
-                        "date_created": "Thu, 19 Mar 2015 22:52:19 +0000",
-                        "date_updated": "Thu, 19 Mar 2015 22:52:19 +0000",
-                        "date_sent": null,
-                        "account_sid": "<twilio_sid>",
-                        "to": "+380939523746",
-                        "from": "+16503766005",
-                        "body": "Zazo access code: 623030",
-                        "status": "queued",
-                        "num_segments": "1",
-                        "num_media": "0",
-                        "direction": "outbound-api",
-                        "api_version": "2010-04-01",
-                        "price": null,
-                        "price_unit": "USD",
-                        "error_code": null,
-                        "error_message": null,
-                        "uri": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf.json",
-                        "subresource_uris":
-                            {
-                                "media": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf/Media.json"
-                            }
+                "original_response: {
+                    "sid": "SM272eb583ba9f40859abd816e97958bbf",
+                    "date_created": "Thu, 19 Mar 2015 22:52:19 +0000",
+                    "date_updated": "Thu, 19 Mar 2015 22:52:19 +0000",
+                    "date_sent": null,
+                    "account_sid": "<twilio_sid>",
+                    "to": "+380939523746",
+                    "from": "+16503766005",
+                    "body": "Zazo access code: 623030",
+                    "status": "queued",
+                    "num_segments": "1",
+                    "num_media": "0",
+                    "direction": "outbound-api",
+                    "api_version": "2010-04-01",
+                    "price": null,
+                    "price_unit": "USD",
+                    "error_code": null,
+                    "error_message": null,
+                    "uri": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf.json",
+                    "subresource_uris": {
+                        "media": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf/Media.json"
                     }
+               }
             }

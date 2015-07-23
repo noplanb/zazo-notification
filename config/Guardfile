@@ -119,3 +119,8 @@ end
 #   watch(/.+\.rb$/)
 #   watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
 # end
+
+guard 'rake', task: 'dredd aglio:generate', run_on_start: false do
+  watch(/apiary\.apib$/)
+  watch(%r{/doc/\w+\.apib$})
+end
