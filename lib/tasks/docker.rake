@@ -15,6 +15,6 @@ namespace :docker do
   task :run do
     name = ENV['NAME'] || ENV['app_name'] || 'zazo-notification'
     port = ENV['PORT'] || 8000
-    system "docker run --rm=true --it -p #{port}:8000 --name #{name} #{name}"
+    system "docker run --rm=true --interactive=false --tty=false --publish=#{port}:8000 --name #{name} #{name}"
   end
 end
