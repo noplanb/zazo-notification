@@ -8,7 +8,7 @@ gem 'figaro', github: 'fny/figaro', branch: 'elastic-beanstalk-support'
 gem 'pry-rails'
 gem 'rollbar'
 gem 'newrelic_rpm'
-gem 'rest_client'
+gem 'faraday'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

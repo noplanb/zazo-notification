@@ -1,5 +1,3 @@
-require 'rest_client'
-
 namespace :api do
   desc '/api/v1/notifications/sms'
   task sms: :environment do
@@ -13,7 +11,7 @@ namespace :api do
     }
 
     api_host = ENV['API_HOST'] || 'private-b91a9-zazonotification.apiary-mock.com'
-    response = RestClient.post "http://#{api_host}/api/v1/notifications/sms", values, headers
-    puts response
+    response = Faraday.post "http://#{api_host}/api/v1/notifications/sms", values, headers
+    puts response.body
   end
 end
