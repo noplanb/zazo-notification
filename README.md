@@ -37,6 +37,16 @@
 
     bin/rake dredd
 
+## Docker
+
+To build docker image
+
+    bin/rake docker:build
+
+And run it:
+
+    bin/rake docker:run
+
 ## API documentation
 
 API Blueprint documentation stored in [apiary.apib](./apiary.apib).
