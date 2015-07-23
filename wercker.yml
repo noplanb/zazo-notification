@@ -8,12 +8,12 @@ box: zazo/rails
 # Read more about pipelines on our dev center
 # http://devcenter.wercker.com/docs/pipelines/index.html
 build:
-  services:
-    - id: mysql
-      tag: 5.6
-      env:
-        MYSQL_ROOT_PASSWORD: zazo888secret
-        MYSQL_DATABASE: zazo_test
+  # services:
+  #   - id: mysql
+  #     tag: 5.6
+  #     env:
+  #       MYSQL_ROOT_PASSWORD: zazo888secret
+  #       MYSQL_DATABASE: zazo_test
   # Steps make up the actions in your pipeline
   # Read more about steps on our dev center:
   # http://devcenter.wercker.com/docs/steps/index.html
