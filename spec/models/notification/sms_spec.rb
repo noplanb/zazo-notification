@@ -9,12 +9,12 @@ RSpec.describe Notification::Sms, type: :model do
   let(:twilio_token) { instance.twilio_token }
   let(:from) { instance.from }
 
-  describe '#notify', pending: 'FIXME: vcr' do
+  describe '#notify' do
     subject { instance.notify }
 
     context 'on success' do
       around do |example|
-        VCR.use_cassette('twilio/message_with_success', erb: {
+        VCR.use_cassette('twilio/message/success', erb: {
                            twilio_ssid: twilio_ssid,
                            twilio_token: twilio_token,
                            from: from,
@@ -26,10 +26,11 @@ RSpec.describe Notification::Sms, type: :model do
 
       specify do
         is_expected.to eq(
-          status: 'success', original_response: {
-            'sid' => 'SM272eb583ba9f40859abd816e97958bbf',
-            'date_created' => 'Thu, 19 Mar 2015 22:52:19 +0000',
-            'date_updated' => 'Thu, 19 Mar 2015 22:52:19 +0000',
+          status: :success,
+          original_response: {
+            'sid' => 'SM9279a785961441499a81422737998152',
+            'date_created' => 'Fri, 24 Jul 2015 11:50:24 +0000',
+            'date_updated' => 'Fri, 24 Jul 2015 11:50:24 +0000',
             'date_sent' => nil,
             'account_sid' => twilio_ssid,
             'to' => mobile_number,
@@ -38,24 +39,25 @@ RSpec.describe Notification::Sms, type: :model do
             'status' => 'queued',
             'num_segments' => '1',
             'num_media' => '0',
-            'direction' => 'outbound-api', 'api_version' => '2010-04-01',
-            'price' => nil, 'price_unit' => 'USD', 'error_code' => nil,
+            'direction' => 'outbound-api',
+            'api_version' => '2010-04-01',
+            'price' => nil,
+            'price_unit' => 'USD',
+            'error_code' => nil,
             'error_message' => nil,
-            'uri' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM272eb583ba9f40859abd816e97958bbf.json",
+            'uri' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152.json",
             'subresource_uris' => {
-              'media' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM272eb583ba9f40859abd816e97958bbf/Media.json"
-            }
-          })
+              'media' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152/Media.json" } })
       end
     end
 
     context 'on invalid number' do
       let(:mobile_number) { '+20227368296' }
       let(:code) { 21_614 }
-      let(:message) { "'To' number is not a valid mobile number" }
+      let(:message) { "To number: #{mobile_number}, is not a mobile number" }
 
       around do |example|
-        VCR.use_cassette('twilio/message_with_error', erb: {
+        VCR.use_cassette('twilio/message/error', erb: {
           twilio_ssid: twilio_ssid,
           twilio_token: twilio_token,
           from: from,
@@ -66,7 +68,7 @@ RSpec.describe Notification::Sms, type: :model do
       end
 
       specify do
-        is_expected.to eq(status: 'failed',
+        is_expected.to eq(status: :failed,
                           errors: [
                             'Twilio error' => message
                           ],

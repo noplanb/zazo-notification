@@ -24,13 +24,17 @@ class Notification::Sms < Notification::Base
   end
 
   def twilio
-    Twilio::REST::Client.new twilio_ssid, twilio_token
+    @twilio ||= Twilio::REST::Client.new twilio_ssid, twilio_token
+  end
+
+  def last_response
+    JSON.parse(twilio.last_response.body)
   end
 
   def notify
     twilio.messages.create(from: from, to: to, body: body)
     Rails.logger.info "#{self}: to: #{to} body: #{body}"
-    {}
+    { status: :success, original_response: last_response }
   rescue Twilio::REST::RequestError => error
     handle_twilio_error(error)
   end
@@ -40,6 +44,8 @@ class Notification::Sms < Notification::Base
   def handle_twilio_error(error)
     Rollbar.warning(error)
     Rails.logger.error "ERROR: sms: #{error.class} ##{error.code}: #{error.message}"
-    {}
+    { status: :failed,
+      errors: [{ 'Twilio error' => error.to_s }],
+      original_response: last_response }
   end
 end
