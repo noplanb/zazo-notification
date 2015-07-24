@@ -28,9 +28,9 @@ build:
     - script:
         name: rspec
         code: rspec
-    - script:
-        name: dredd
-        code: rake dredd || true | tee $WERCKER_REPORT_ARTIFACTS_DIR/dredd.txt
+    # - script:
+    #     name: dredd
+    #     code: rake dredd || true | tee $WERCKER_REPORT_ARTIFACTS_DIR/dredd.txt
   after-steps:
     - asux/pretty-slack-notify:
         webhook_url: $slack_url

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
   let(:username) { 'notification' }
-  let(:password) { Credentials.services.notification }
-
+  
   describe 'GET #status' do
     before { get :status }
 
@@ -15,7 +14,7 @@ RSpec.describe ApplicationController, type: :controller do
   describe 'GET #settings' do
     context 'when authenticated' do
       before do
-        authenticate_with_http_digest(username, password) do
+        authenticate_with_http_digest do
           get :settings
         end
       end

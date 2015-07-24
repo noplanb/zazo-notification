@@ -37,4 +37,7 @@ class Notification::Base
 
   def notify
   end
+
+  def original_response
+  end
 end

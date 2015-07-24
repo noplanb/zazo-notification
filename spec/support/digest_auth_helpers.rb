@@ -1,6 +1,8 @@
 # spec/support/digest_auth_helpers.rb
 module DigestAuthHelpers
-  def authenticate_with_http_digest(user, password, &request_trigger)
+  def authenticate_with_http_digest(user = nil, password = nil, &request_trigger)
+    user ||= 'notification'
+    password ||= Credentials.services.notification
     request.env['HTTP_AUTHORIZATION'] = encode_credentials(user, password, &request_trigger)
     request_trigger.call
   end

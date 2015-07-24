@@ -16,7 +16,13 @@ RSpec.describe Notification::Sms, type: :model do
 
   describe '.description' do
     subject { described_class.description }
-    it { is_expected.to eq("SMS notification via Twilio") }
+    it { is_expected.to eq('SMS notification via Twilio') }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:mobile_number) }
+    it { is_expected.to validate_presence_of(:body) }
+    it { is_expected.to validate_presence_of(:from) }
   end
 
   describe '#notify' do
@@ -34,30 +40,43 @@ RSpec.describe Notification::Sms, type: :model do
         end
       end
 
-      specify do
-        is_expected.to eq(
-          status: :success,
-          original_response: {
-            'sid' => 'SM9279a785961441499a81422737998152',
-            'date_created' => 'Fri, 24 Jul 2015 11:50:24 +0000',
-            'date_updated' => 'Fri, 24 Jul 2015 11:50:24 +0000',
-            'date_sent' => nil,
-            'account_sid' => twilio_ssid,
-            'to' => mobile_number,
-            'from' => from,
-            'body' => body,
-            'status' => 'queued',
-            'num_segments' => '1',
-            'num_media' => '0',
-            'direction' => 'outbound-api',
-            'api_version' => '2010-04-01',
-            'price' => nil,
-            'price_unit' => 'USD',
-            'error_code' => nil,
-            'error_message' => nil,
-            'uri' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152.json",
-            'subresource_uris' => {
-              'media' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152/Media.json" } })
+      it { is_expected.to be true }
+
+      context 'errors' do
+        before { instance.notify }
+        subject { instance.errors }
+
+        specify do
+          is_expected.to be_empty
+        end
+      end
+
+      context 'original_response' do
+        before { instance.notify }
+        subject { instance.original_response }
+
+        specify do
+          is_expected.to eq('sid' => 'SM9279a785961441499a81422737998152',
+                            'date_created' => 'Fri, 24 Jul 2015 11:50:24 +0000',
+                            'date_updated' => 'Fri, 24 Jul 2015 11:50:24 +0000',
+                            'date_sent' => nil,
+                            'account_sid' => twilio_ssid,
+                            'to' => mobile_number,
+                            'from' => from,
+                            'body' => body,
+                            'status' => 'queued',
+                            'num_segments' => '1',
+                            'num_media' => '0',
+                            'direction' => 'outbound-api',
+                            'api_version' => '2010-04-01',
+                            'price' => nil,
+                            'price_unit' => 'USD',
+                            'error_code' => nil,
+                            'error_message' => nil,
+                            'uri' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152.json",
+                            'subresource_uris' => {
+                              'media' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152/Media.json" })
+        end
       end
     end
 
@@ -77,16 +96,27 @@ RSpec.describe Notification::Sms, type: :model do
         end
       end
 
-      specify do
-        is_expected.to eq(status: :failed,
-                          errors: [
-                            'Twilio error' => message
-                          ],
-                          original_response: {
-                            'code' => code,
+      it { is_expected.to be false }
+
+      context 'original_response' do
+        before { instance.notify }
+        subject { instance.original_response }
+
+        specify do
+          is_expected.to eq('code' => code,
                             'message' => message,
-                            'more_info' => "https://www.twilio.com/docs/errors/#{code}", 'status' => 400
-                          })
+                            'more_info' => "https://www.twilio.com/docs/errors/#{code}",
+                             'status' => 400)
+        end
+      end
+
+      context 'errors.messages' do
+        before { instance.notify }
+        subject { instance.errors.messages }
+
+        specify do
+          is_expected.to eq(twilio: [message])
+        end
       end
     end
   end

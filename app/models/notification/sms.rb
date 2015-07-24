@@ -1,24 +1,16 @@
 class Notification::Sms < Notification::Base
   REQUIRED_PARAMS = %w(mobile_number body).freeze
+  attr_accessor :mobile_number, :from, :body
+  after_initialize :set_attributes
+
+  validates :mobile_number, :body, :from, presence: true
 
   def self.description
-    "SMS notification via Twilio"
-  end
-
-  def mobile_number
-    @params[:mobile_number]
-  end
-
-  def from
-    @params[:from] || Figaro.env.twilio_from_number
-  end
-
-  def body
-    @params[:body]
+    'SMS notification via Twilio'
   end
 
   def to
-    Rails.env.development? ? Figaro.env.twilio_to_number : mobile_number
+    Settings.stub_mobile_number ? Figaro.env.twilio_to_number : mobile_number
   end
 
   def twilio_ssid
@@ -33,25 +25,38 @@ class Notification::Sms < Notification::Base
     @twilio ||= Twilio::REST::Client.new twilio_ssid, twilio_token
   end
 
-  def last_response
+  def original_response
     JSON.parse(twilio.last_response.body)
   end
 
   def notify
-    twilio.messages.create(from: from, to: to, body: body)
-    Rails.logger.info "#{self}: to: #{to} body: #{body}"
-    { status: :success, original_response: last_response }
+    create_message
+    log_success
+    true
   rescue Twilio::REST::RequestError => error
     handle_twilio_error(error)
+    false
+  end
+
+  def create_message
+    twilio.messages.create(from: from, to: to, body: body)
   end
 
   protected
 
+  def log_success
+    Rails.logger.info "#{self}: to: #{to} body: #{body}"
+  end
+
   def handle_twilio_error(error)
     Rollbar.warning(error)
     Rails.logger.error "ERROR: sms: #{error.class} ##{error.code}: #{error.message}"
-    { status: :failed,
-      errors: [{ 'Twilio error' => error.to_s }],
-      original_response: last_response }
+    errors.add(:twilio, error.message)
+  end
+
+  def set_attributes
+    @mobile_number = @params[:mobile_number]
+    @from = @params[:from] || Figaro.env.twilio_from_number
+    @body = @params[:body]
   end
 end
