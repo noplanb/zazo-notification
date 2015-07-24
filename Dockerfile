@@ -1,3 +1,3 @@
 FROM zazo/rails
 
-EXPOSE 8000
+EXPOSE 80

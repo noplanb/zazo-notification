@@ -14,8 +14,8 @@ namespace :docker do
   desc 'Run Docker image NAME at PORT'
   task :run do
     name = ENV['NAME'] || ENV['app_name'] || 'zazo-notification'
-    port = ENV['PORT'] || 8000
-    system "docker run --rm=true --interactive=false --tty=false --publish=#{port}:8000 --name #{name} #{name}"
+    port = ENV['PORT'] || 80
+    system "docker run --rm=true --publish=#{port}:80 --name #{name} #{name}"
   end
 
   desc 'Start Docker container'
