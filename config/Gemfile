@@ -10,6 +10,7 @@ gem 'pry-rails'
 gem 'puma'
 gem 'rails-api'
 gem 'rollbar'
+gem 'settingslogic'
 gem 'twilio-ruby'
 
 group :development, :test do

@@ -1,4 +1,10 @@
 class Notification::Sms < Notification::Base
+  REQUIRED_PARAMS = %w(mobile_number body).freeze
+
+  def self.description
+    "SMS notification via Twilio"
+  end
+
   def mobile_number
     @params[:mobile_number]
   end

@@ -9,6 +9,16 @@ RSpec.describe Notification::Sms, type: :model do
   let(:twilio_token) { instance.twilio_token }
   let(:from) { instance.from }
 
+  describe '.required_params' do
+    subject { described_class.required_params }
+    it { is_expected.to eq(%w(mobile_number body)) }
+  end
+
+  describe '.description' do
+    subject { described_class.description }
+    it { is_expected.to eq("SMS notification via Twilio") }
+  end
+
   describe '#notify' do
     subject { instance.notify }
 
