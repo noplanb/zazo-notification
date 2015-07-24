@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe Metric::Base, type: :model do
+RSpec.describe Notification::Base, type: :model do
   let(:instance) { described_class.new(foo: 'bar') }
-  let(:hash) { { name: 'base', type: :aggregated } }
+  let(:hash) { { name: 'base', required_params: [] } }
 
-  describe '#attributes' do
-    subject { instance.attributes }
-    it { is_expected.to eq('foo' => 'bar') }
+  describe '#params' do
+    subject { instance.params }
+    it { is_expected.to eq(foo: 'bar') }
   end
 
-  describe '.metric_name' do
-    subject { described_class.metric_name }
+  describe '.notification_name' do
+    subject { described_class.notification_name }
     it { is_expected.to eq('base') }
   end
 
