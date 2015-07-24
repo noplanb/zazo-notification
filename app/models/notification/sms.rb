@@ -45,7 +45,7 @@ class Notification::Sms < Notification::Base
   protected
 
   def log_success
-    Rails.logger.info "#{self}: to: #{to} body: #{body}"
+    Rails.logger.info "#{self.class.name}: []#{to}] #{body}"
   end
 
   def handle_twilio_error(error)
