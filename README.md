@@ -1,5 +1,7 @@
 # Zazo Notification service
 
+[![wercker status](https://app.wercker.com/status/9fd1bd52a06ca4c5370c1b58d3254d41/m "wercker status")](https://app.wercker.com/project/bykey/9fd1bd52a06ca4c5370c1b58d3254d41)
+
 ## Stack
 
 * [Rails](http://rubyonrails.org) web-framework.
