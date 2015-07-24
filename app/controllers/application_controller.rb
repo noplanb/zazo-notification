@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Basic::ControllerMethods
   include ActionController::HttpAuthentication::Digest::ControllerMethods
-  include ActionController::HttpAuthentication::Token::ControllerMethods
 
   REALM = Settings.app_name
   attr_accessor :current_service

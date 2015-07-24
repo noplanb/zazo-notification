@@ -34,7 +34,7 @@ RSpec.describe ApplicationController, type: :controller do
     end
 
     context 'when not authenticated' do
-      before { get :status }
+      before { get :settings }
       specify do
         expect(response).to have_http_status(:unauthorized)
       end
