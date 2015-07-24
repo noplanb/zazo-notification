@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<%= twilio_ssid %>:<%= twilio_token %>@api.twilio.com/2010-04-01/Accounts/<%= twilio_ssid %>/Calls.json
+    body:
+      encoding: US-ASCII
+      string: From=<%= CGI.escape from %>&To=<%= CGI.escape to %>&Url=<%= CGI.escape url %>&Method=GET&FallbackUrl=<%= CGI.escape fallback_url %>
+    headers:
+      Accept:
+      - application/json
+      Accept-Charset:
+      - utf-8
+      User-Agent:
+      - twilio-ruby/3.15.2 (ruby/x86_64-darwin14 2.2.2-p95)
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 18 Apr 2015 13:47:09 GMT
+      X-Powered-By:
+      - AT-5000
+      X-Shenanigans:
+      - none
+      Content-Length:
+      - '1016'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"sid": "CA53eeaa4ee948f52218ec76be401c75fe", "date_created": null,
+        "date_updated": null, "parent_call_sid": null, "account_sid": "<%= twilio_ssid %>",
+        "to": "<%= to %>", "to_formatted": "<%= GlobalPhone.parse(to).national_format %>", "from": "<%= from %>",
+        "from_formatted": "<%= GlobalPhone.parse(from).national_format %>", "phone_number_sid": "PN9a26b94a6de9a7c61bb1ca31ed49fb40",
+        "status": "queued", "start_time": null, "end_time": null, "duration": null,
+        "price": null, "price_unit": "USD", "direction": "outbound-api", "answered_by":
+        null, "api_version": "2010-04-01", "annotation": null, "forwarded_from": null,
+        "group_sid": null, "caller_name": null, "uri": "/2010-04-01/Accounts/<%= twilio_ssid %>/Calls/CA53eeaa4ee948f52218ec76be401c75fe.json",
+        "subresource_uris": {"notifications": "/2010-04-01/Accounts/<%= twilio_ssid %>/Calls/CA53eeaa4ee948f52218ec76be401c75fe/Notifications.json",
+        "recordings": "/2010-04-01/Accounts/<%= twilio_ssid %>/Calls/CA53eeaa4ee948f52218ec76be401c75fe/Recordings.json"}}'
+    http_version:
+  recorded_at: Sat, 18 Apr 2015 13:47:10 GMT
+recorded_with: VCR 2.9.3
