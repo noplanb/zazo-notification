@@ -5,9 +5,9 @@ HOST: http://notification.zazoapp.com
 
 ## Authentication
 
-The default mehtod is **HTTP Digest** with service's username and token.
+The default mehtod is **HTTP Digest** with service's `username` and `password`.
 
-The **HTTP Basic** will work for _development_ environment.
+The **HTTP Basic** will work for _development_ environment (as in examples).
 
 ## Failure
 
@@ -18,10 +18,10 @@ If parameters is invalid:
     + Body
 
             {
-                "status": "failed",
+                "status": "invalid",
                 "errors": [
                     {
-                      "text": "must be present"
+                      "body": "must be present"
                     }
                 ],
                 "original_response": null
@@ -34,7 +34,7 @@ On backend service error:
     + Body
 
             {
-                "status": "failed",
+                "status": "failure",
                 "errors": [
                     {
                       "Twilio error": "'To' number is not a valid mobile number"
@@ -52,14 +52,20 @@ On backend service error:
 
 ### List of available notifications [GET /api/v1/notifications]
 
-+ Response 200 (application/json)
++ Request
+    + Headers
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
++ Response 200 (application/json; charset=utf-8)
+
 
         {
+            "status": "success",
             "data": [
                 {
                     "name": "sms",
-                    "descriptions": "SMS send via Twilio",
-                    "required_params": ["mobile_number", "text"]
+                    "description": "SMS send via Twilio",
+                    "required_params": ["mobile_number", "body"]
                 }
             ],
             "meta": {
@@ -79,6 +85,9 @@ Send SMS via Twilio service.
         + Default: +16503766005
 
 + Request (application/json)
+    + Headers
+
+        Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
 
     + Body
 
