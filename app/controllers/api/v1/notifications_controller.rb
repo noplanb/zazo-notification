@@ -3,7 +3,6 @@ class Api::V1::NotificationsController < ApplicationController
   before_action :check_notification_is_valid, only: [:create]
 
   def index
-    Rails.logger.ap request.env
     @notifications = Notification.all
     render json: { data: @notifications, meta: { total: @notifications.size } }
   end
