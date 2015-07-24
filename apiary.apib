@@ -9,6 +9,16 @@ The default mehtod is **HTTP Digest** with service's `username` and `password`.
 
 The **HTTP Basic** will work for _development_ environment (as in examples).
 
+On *unauthorized* response will be:
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "status": "unauthorized"
+            }
+
 ## Failure
 
 If parameters is invalid:
