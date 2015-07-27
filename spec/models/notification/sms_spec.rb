@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Notification::Sms, type: :model do
   let(:mobile_number) { '+380939523746' }
   let(:body) { 'Hello from Zazo!' }
-  let(:params) { { mobile_number: mobile_number, body: body } }
+  let(:service) { 'notification' }
+  let(:params) { { service: service, mobile_number: mobile_number, body: body } }
   let(:instance) { described_class.new(params) }
   let(:twilio_ssid) { instance.twilio_ssid }
   let(:twilio_token) { instance.twilio_token }
@@ -77,6 +78,23 @@ RSpec.describe Notification::Sms, type: :model do
                             'subresource_uris' => {
                               'media' => "/2010-04-01/Accounts/#{twilio_ssid}/Messages/SM9279a785961441499a81422737998152/Media.json" })
         end
+      end
+
+      context 'event notification' do
+        let(:event_params) do
+          { initiator: 'service',
+            initiator_id: 'notification',
+            target: 'user',
+            target_id: mobile_number,
+            data: {
+              from: from,
+              to: mobile_number,
+              body: body
+            },
+            raw_params: params }
+        end
+
+        it_behaves_like 'event dispatchable', %w(notification sms)
       end
     end
 

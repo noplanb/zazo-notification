@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::NotificationsController, type: :controller do
+  let(:service) { 'notification' }
+
   describe 'GET #index' do
     before do
       authenticate_with_http_digest do
@@ -136,20 +138,45 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           allow_any_instance_of(Notification::Sms).to receive(:notify).and_return(true)
         end
 
-        before do
-          authenticate_with_http_digest do
-            post :create, { id: id }.merge(params)
+        context 'response' do
+          before do
+            authenticate_with_http_digest do
+              post :create, { id: id }.merge(params)
+            end
+          end
+
+          specify do
+            expect(json_response).to eq(
+              'status' => 'success',
+              'original_response' => original_response)
+          end
+
+          specify do
+            expect(response).to have_http_status(:ok)
           end
         end
 
-        specify do
-          expect(json_response).to eq(
-            'status' => 'success',
-            'original_response' => original_response)
-        end
+        context 'event notification', pending: 'FIXME: why not calls' do
+          subject do
+            authenticate_with_http_digest do
+              post :create, { id: id }.merge(params)
+            end
+          end
 
-        specify do
-          expect(response).to have_http_status(:ok)
+          let(:event_params) do
+            { initiator: 'service',
+              initiator_id: service,
+              target: 'user',
+              target_id: mobile_number,
+              data: {
+                from: from,
+                to: mobile_number,
+                body: body
+              },
+              raw_params: params.merge(service: service) }
+          end
+
+          it_behaves_like 'event dispatchable', %w(notification sms)
         end
       end
     end

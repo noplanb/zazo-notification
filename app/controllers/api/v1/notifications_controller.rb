@@ -25,7 +25,7 @@ class Api::V1::NotificationsController < ApplicationController
   end
 
   def find_notification
-    @notification = Notification.find(params[:id]).new(notification_params)
+    @notification = Notification.find(params[:id]).new(notification_params.merge(service: current_service))
   rescue Notification::UnknownNotification => error
     render status: :not_found, json: { status: :not_found,
                                        errors: { error.class.name => error.message } }
