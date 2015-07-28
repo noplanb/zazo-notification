@@ -36,8 +36,42 @@ class Notification::Base
   end
 
   def notify
+    send_event if do_notify
   end
 
   def original_response
+  end
+
+  protected
+
+  def do_notify
+  end
+
+  def event_data
+  end
+
+  def event
+    { initiator: 'service',
+      initiator_id: service,
+      target: 'user',
+      target_id: mobile_number,
+      data: event_data,
+      raw_params: params }
+  end
+
+  def send_event
+    EventDispatcher.emit(['notification', self.class.notification_name], event)
+  end
+
+  def log_success
+    Rails.logger.info "#{self.class.notification_name}: #{params}"
+  end
+
+  def log_error(error)
+    Rails.logger.error "#{self.class.notification_name}: #{error.inspect}"
+  end
+
+  def notify_rollbar(error)
+    Rollbar.warning(error)
   end
 end

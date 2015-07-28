@@ -29,14 +29,11 @@ class Notification::Sms < Notification::Base
     JSON.parse(twilio.last_response.body)
   end
 
-  def notify
+  def do_notify
     create_message
     log_success
-    send_event
-    true
   rescue Twilio::REST::RequestError => error
     handle_twilio_error(error)
-    false
   end
 
   def create_message
@@ -45,13 +42,9 @@ class Notification::Sms < Notification::Base
 
   protected
 
-  def log_success
-    Rails.logger.info "#{self.class.name}: [#{to}] #{body}"
-  end
-
   def handle_twilio_error(error)
-    Rollbar.warning(error)
-    Rails.logger.error "ERROR: sms: #{error.class} ##{error.code}: #{error.message}"
+    log_error(error)
+    notify_rollbar(error)
     errors.add(:twilio, error.message)
   end
 
@@ -62,20 +55,9 @@ class Notification::Sms < Notification::Base
     @body = @params[:body]
   end
 
-  def event
-    { initiator: 'service',
-      initiator_id: service,
-      target: 'user',
-      target_id: mobile_number,
-      data: {
-        from: from,
-        to: to,
-        body: body
-      },
-      raw_params: params }
-  end
-
-  def send_event
-    EventDispatcher.emit(%w(notification sms), event)
+  def event_data
+    { from: from,
+      to: to,
+      body: body }
   end
 end

@@ -8,7 +8,8 @@ class Api::V1::NotificationsController < ApplicationController
   end
 
   def create
-    if @notification.notify
+    @notification.notify
+    if @notification.valid?
       render json: { status: :success,
                      original_response: @notification.original_response }
     else
