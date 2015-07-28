@@ -16,10 +16,15 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
     specify do
       expect(json_response).to eq('data' =>
-       [{ 'name' => 'sms',
-          'description' => 'SMS notification via Twilio',
-          'required_params' => %w(mobile_number body) }],
-                                  'meta' => { 'total' => 1 })
+       [
+         { 'name' => 'email',
+           'description' => 'Notification via Email over AWS',
+           'required_params' => %w(recipient subject body) },
+         { 'name' => 'sms',
+           'description' => 'SMS notification via Twilio',
+           'required_params' => %w(mobile_number body) }
+       ],
+                                  'meta' => { 'total' => 2 })
     end
   end
 
@@ -86,7 +91,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
         before do
           allow_any_instance_of(Notification::Sms).to receive(:original_response).and_return(original_response)
-          allow_any_instance_of(Notification::Sms).to receive(:create_message).and_raise(Twilio::REST::RequestError.new(message, code))
+          allow_any_instance_of(Notification::Sms).to receive(:do_notify).and_raise(Twilio::REST::RequestError.new(message, code))
         end
 
         before do
@@ -99,7 +104,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           expect(json_response).to eq(
             'status' => 'failure',
             'errors' => {
-              'twilio' => [message]
+              'Twilio::REST::RequestError' => [message]
             },
             'original_response' => original_response)
         end

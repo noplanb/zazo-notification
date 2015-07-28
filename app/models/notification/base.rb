@@ -36,15 +36,29 @@ class Notification::Base
   end
 
   def notify
-    send_event if do_notify
+    do_notify
+    log_success
+    send_event
+  rescue StandardError => error
+    handle_error(error)
   end
 
   def original_response
   end
 
-  protected
+  def valid?(context = nil)
+    errors.empty? && super(context)
+  end
 
   def do_notify
+  end
+
+  protected
+
+  def handle_error(error)
+    log_error(error)
+    notify_rollbar(error)
+    errors.add(error.class.name, error.message)
   end
 
   def event_data
@@ -77,5 +91,4 @@ class Notification::Base
     @service = params[:service]
   end
   after_initialize :set_attributes
-
 end

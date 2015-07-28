@@ -39,4 +39,46 @@ RSpec.describe Notification::Base, type: :model do
     subject { described_class.to_param }
     it { is_expected.to eq('base') }
   end
+
+  context 'on success' do
+    subject { instance }
+
+    context 'valid?' do
+      before { instance.notify }
+      it { is_expected.to be_valid }
+    end
+  end
+
+  context 'on error' do
+    subject { instance }
+    let(:error) { StandardError.new('error') }
+    before { allow(instance).to receive(:do_notify).and_raise(error) }
+
+    context 'valid?' do
+      before { instance.notify }
+      subject { instance.valid? }
+      it { is_expected.to be false }
+    end
+
+    context 'errors' do
+      before { instance.notify }
+      subject { instance.errors }
+      it { is_expected.to_not be_empty }
+    end
+
+    specify do
+      expect(instance).to receive(:handle_error).with(error)
+      instance.notify
+    end
+
+    specify do
+      expect(instance).to receive(:notify_rollbar).with(error)
+      instance.notify
+    end
+
+    specify do
+      expect(instance).to receive(:log_error).with(error)
+      instance.notify
+    end
+  end
 end

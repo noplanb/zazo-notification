@@ -3,6 +3,8 @@ defaults: &defaults
   version: 0.1.0
   authentication_method: digest
   stub_mobile_number: false
+  notification_mailer:
+    default_from: Zazo <support@zazoapp.com>
   rspec:
     profile_examples: 10
 

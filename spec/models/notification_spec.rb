@@ -20,7 +20,10 @@ RSpec.describe Notification, type: :model do
   describe '.all' do
     subject { described_class.all }
     let(:all_notifications) do
-      [Notification::Sms]
+      [
+        Notification::Email,
+        Notification::Sms
+      ]
     end
     it { is_expected.to eq(all_notifications) }
   end

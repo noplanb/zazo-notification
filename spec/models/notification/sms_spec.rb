@@ -118,7 +118,7 @@ RSpec.describe Notification::Sms, type: :model do
       before { instance.notify }
       subject { instance }
 
-      it { is_expected.to be_valid }
+      it { is_expected.to be_invalid }
 
       context 'original_response' do
         subject { instance.original_response }
@@ -135,7 +135,7 @@ RSpec.describe Notification::Sms, type: :model do
         subject { instance.errors.messages }
 
         specify do
-          is_expected.to eq(twilio: [message])
+          is_expected.to eq(:'Twilio::REST::RequestError' => [message])
         end
       end
     end
