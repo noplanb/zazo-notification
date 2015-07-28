@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe Notification::Email, type: :model do
   let(:instance) { described_class.new(params) }
 
-  let(:email_sender) { 'support@zazoapp.com' }
-  let(:email_recipient) { Faker::Internet.email }
+  let(:email_from) { 'support@zazoapp.com' }
+  let(:email_to) { Faker::Internet.email }
   let(:email_subject) { 'Testing Zazo notifications' }
   let(:email_body) { Faker::Lorem.paragraph }
-  let(:params) { { recipient: email_recipient, subject: email_subject, body: email_body } }
+  let(:params) { { to: email_to, subject: email_subject, body: email_body } }
 
   describe 'after initialize' do
-    context '#recipient' do
-      subject { instance.recipient }
-      it { is_expected.to eq(email_recipient) }
+    context '#to' do
+      subject { instance.to }
+      it { is_expected.to eq(email_to) }
     end
 
     context '#subject' do
@@ -27,7 +27,7 @@ RSpec.describe Notification::Email, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:recipient) }
+    it { is_expected.to validate_presence_of(:to) }
     it { is_expected.to validate_presence_of(:body) }
     it { is_expected.to validate_presence_of(:subject) }
   end
@@ -53,9 +53,9 @@ RSpec.describe Notification::Email, type: :model do
           it { is_expected.to eq(email_subject) }
         end
 
-        context 'recipient' do
+        context 'to' do
           subject { mail.to }
-          it { is_expected.to eq([email_recipient]) }
+          it { is_expected.to eq([email_to]) }
         end
 
         context 'body' do
@@ -67,7 +67,8 @@ RSpec.describe Notification::Email, type: :model do
 
     context 'on error' do
       subject { instance }
-      before { allow(instance).to receive(:do_notify).and_raise(Net::SMTPFatalError.new('invalid email')) }
+      before { allow(instance).to receive(:do_notify).and_raise(Net::SMTPFatalError.new('554 Message rejected: Email address is not verified.
+')) }
 
       context 'valid?' do
         before { instance.notify }

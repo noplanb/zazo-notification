@@ -1,30 +1,34 @@
 class Notification::Email < Notification::Base
-  REQUIRED_PARAMS = %w(recipient subject body).freeze
-  attr_accessor :sender, :recipient, :subject, :body
+  REQUIRED_PARAMS = %w(to subject body).freeze
+  attr_accessor :from, :to, :subject, :body
 
-  validates :recipient, :subject, :body, presence: true
+  validates :to, :subject, :body, presence: true
 
   def self.description
     'Notification via Email over AWS'
   end
 
   def do_notify
-    Notification::Mailer.notification(mail_params).deliver_now
+    @mail = Notification::Mailer.notification(mail_params).deliver_now
+  end
+
+  def original_response
+    @mail.try(:header_fields)
   end
 
   protected
 
   def mail_params
-    { sender: sender,
-      recipient: recipient,
+    { from: from,
+      to: to,
       subject: subject,
       body: body }
   end
 
   def set_attributes
     super
-    @sender = params[:sender] || Settings.notification_mailer.default_from
-    @recipient = params[:recipient]
+    @from = params[:from] || Settings.notification_mailer.default_from
+    @to = params[:to]
     @subject = params[:subject]
     @body = params[:body]
   end

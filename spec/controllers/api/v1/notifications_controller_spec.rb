@@ -19,7 +19,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
        [
          { 'name' => 'email',
            'description' => 'Notification via Email over AWS',
-           'required_params' => %w(recipient subject body) },
+           'required_params' => %w(to subject body) },
          { 'name' => 'sms',
            'description' => 'SMS notification via Twilio',
            'required_params' => %w(mobile_number body) }

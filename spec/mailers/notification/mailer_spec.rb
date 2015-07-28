@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Notification::Mailer, type: :mailer do
   describe 'notification' do
-    let(:email_recipient) { Faker::Internet.email }
+    let(:email_to) { Faker::Internet.email }
     let(:email_subject) { 'Testing Zazo notifications' }
     let(:email_body) { Faker::Lorem.paragraph }
     let(:email_from) { 'support@zazoapp.com' }
     let(:params) do
-      { recipient: email_recipient,
+      { to: email_to,
         subject: email_subject,
         body: email_body }
     end
@@ -16,7 +16,7 @@ RSpec.describe Notification::Mailer, type: :mailer do
 
     it 'renders the headers' do
       expect(mail.subject).to eq(email_subject)
-      expect(mail.to).to eq([email_recipient])
+      expect(mail.to).to eq([email_to])
       # expect(mail.from).to eq([email_from])
     end
 

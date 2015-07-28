@@ -8,11 +8,11 @@ class Notification::Mailer < ApplicationMailer
   #
   def notification(params)
     subject = params[:subject]
-    recipient = params[:recipient]
-    sender = params[:sender] if params[:sender]
+    to = params[:to]
+    from = params[:from] if params[:from]
     body = params[:body]
 
-    mail from: sender, to: recipient, subject: subject do |format|
+    mail from: from, to: to, subject: subject do |format|
       format.text { render text: body }
     end
   end
