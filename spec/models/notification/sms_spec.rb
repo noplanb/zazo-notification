@@ -87,8 +87,6 @@ RSpec.describe Notification::Sms, type: :model do
         let(:event_params) do
           { initiator: 'service',
             initiator_id: 'notification',
-            target: 'user',
-            target_id: mobile_number,
             data: {
               from: from,
               to: mobile_number,

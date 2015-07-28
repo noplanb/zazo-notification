@@ -53,8 +53,6 @@ class Notification::Base
   def event
     { initiator: 'service',
       initiator_id: service,
-      target: 'user',
-      target_id: mobile_number,
       data: event_data,
       raw_params: params }
   end

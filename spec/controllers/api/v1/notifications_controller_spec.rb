@@ -31,7 +31,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
       before do
         authenticate_with_http_digest do
-          post :create, { id: id }.merge(params)
+          post :create, { id: 'unknown' }.merge(params)
         end
       end
 
@@ -41,13 +41,13 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
     end
 
     describe 'sms' do
+      let(:id) { 'sms' }
       let(:mobile_number) { '+380939523746' }
       let(:body) { 'Hello from Zazo!' }
       let(:instance) { Notification::Sms.new(params) }
       let(:twilio_ssid) { instance.twilio_ssid }
       let(:twilio_token) { instance.twilio_token }
       let(:from) { instance.from }
-      let(:id) { 'sms' }
       let(:params) { { mobile_number: mobile_number, body: body } }
 
       context 'when body is missing' do
@@ -166,7 +166,6 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           let(:event_params) do
             { initiator: 'service',
               initiator_id: service,
-              target: 'user',
               target_id: mobile_number,
               data: {
                 from: from,

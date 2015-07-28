@@ -28,18 +28,18 @@ class Notification::Sms < Notification::Base
     JSON.parse(twilio.last_response.body)
   end
 
+  def create_message
+    twilio.messages.create(from: from, to: to, body: body)
+  end
+
+  protected
+
   def do_notify
     create_message
     log_success
   rescue Twilio::REST::RequestError => error
     handle_twilio_error(error)
   end
-
-  def create_message
-    twilio.messages.create(from: from, to: to, body: body)
-  end
-
-  protected
 
   def handle_twilio_error(error)
     log_error(error)

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Notification::Base, type: :model do
   let(:instance) { described_class.new(foo: 'bar') }
-  let(:description) { "Write description in `Notification::Base.description` method" }
+  let(:description) { 'Write description in `Notification::Base.description` method' }
   let(:hash) { { name: 'base', description: description, required_params: [] } }
 
   describe '#params' do
