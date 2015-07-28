@@ -1,7 +1,6 @@
 class Notification::Sms < Notification::Base
   REQUIRED_PARAMS = %w(mobile_number body).freeze
-  attr_accessor :service, :mobile_number, :from, :body
-  after_initialize :set_attributes
+  attr_accessor :mobile_number, :from, :body
 
   validates :mobile_number, :body, :from, presence: true
 
@@ -49,7 +48,7 @@ class Notification::Sms < Notification::Base
   end
 
   def set_attributes
-    @service = @params[:service]
+    super
     @mobile_number = @params[:mobile_number]
     @from = @params[:from] || Figaro.env.twilio_from_number
     @body = @params[:body]

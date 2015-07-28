@@ -1,7 +1,7 @@
 class Notification::Base
   extend ActiveModel::Callbacks
   include ActiveModel::Validations
-  attr_reader :params
+  attr_reader :params, :service
 
   REQUIRED_PARAMS = []
 
@@ -74,4 +74,10 @@ class Notification::Base
   def notify_rollbar(error)
     Rollbar.warning(error)
   end
+
+  def set_attributes
+    @service = params[:service]
+  end
+  after_initialize :set_attributes
+
 end
