@@ -70,16 +70,27 @@ List of available notifications
 
 
         {
-            "status": "success",
             "data": [
+                {
+                    "name": "email",
+                    "description": "Notification via Email over AWS",
+                    "required_params": [
+                        "to",
+                        "subject",
+                        "body"
+                    ]
+                },
                 {
                     "name": "sms",
                     "description": "SMS notification via Twilio",
-                    "required_params": ["mobile_number", "body"]
+                    "required_params": [
+                        "mobile_number",
+                        "body"
+                    ]
                 }
             ],
             "meta": {
-                "total": 1
+                "total": 2
             }
         }
 

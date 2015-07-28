@@ -17,8 +17,16 @@ Authentication not required.</p>
   "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"unauthorized"</span>
 </span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="notifications" class="resource-group"><h2 class="group-heading">Notifications<a href="#notifications" class="permalink">&para;</a></h2><div id="notifications-index" class="resource"><h3>Index<a href="#notifications-index" class="permalink">&para;</a></h3><div id="notifications-index-get" class="action get"><h4><div class="name">Index</div><a href="#notifications-index-get" class="method get">GET</a><code class="uri">/api/v1/notifications</code></h4><p>List of available notifications</p>
 <div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL</span></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json; charset=utf-8</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"success"</span></span>,
   "<span class="hljs-attribute">data</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"email"</span></span>,
+      "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Notification via Email over AWS"</span></span>,
+      "<span class="hljs-attribute">required_params</span>": <span class="hljs-value">[
+        <span class="hljs-string">"to"</span>,
+        <span class="hljs-string">"subject"</span>,
+        <span class="hljs-string">"body"</span>
+      ]
+    </span>},
     {
       "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"sms"</span></span>,
       "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"SMS notification via Twilio"</span></span>,
@@ -29,7 +37,7 @@ Authentication not required.</p>
     </span>}
   ]</span>,
   "<span class="hljs-attribute">meta</span>": <span class="hljs-value">{
-    "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+    "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">2</span>
   </span>}
 </span>}</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="notifications-unkonwn" class="resource"><h3>Unkonwn<a href="#notifications-unkonwn" class="permalink">&para;</a></h3><div id="notifications-unkonwn-post" class="action post"><h4><div class="name">Unkonwn</div><a href="#notifications-unkonwn-post" class="method post">POST</a><code class="uri">/api/v1/notifications/unknown</code></h4><div class="title"><strong>Request</strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL</span></code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>404</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json; charset=utf-8</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
   "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"not_found"</span></span>,
