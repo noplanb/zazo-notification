@@ -1,9 +1,12 @@
 class Notification::Email < Notification::Base
   REQUIRED_PARAMS = %w(to subject body).freeze
+  EMAIL_REGEXP =  /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
+
   attr_accessor :from, :to, :subject, :body
   attr_reader :mail
 
   validates :to, :subject, :body, presence: true
+  validates :to, format: { with: EMAIL_REGEXP }
 
   def self.description
     'Notification via Email over AWS'

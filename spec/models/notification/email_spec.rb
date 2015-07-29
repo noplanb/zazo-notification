@@ -30,6 +30,8 @@ RSpec.describe Notification::Email, type: :model do
     it { is_expected.to validate_presence_of(:to) }
     it { is_expected.to validate_presence_of(:body) }
     it { is_expected.to validate_presence_of(:subject) }
+    it { is_expected.to allow_value('test@example.com', 'test+1@example.com', 'test@i.ua').for(:to) }
+    it { is_expected.to_not allow_value('test@example', 'test$3%@example.com', 'test.i.ua').for(:to) }
   end
 
   describe '#notify' do
