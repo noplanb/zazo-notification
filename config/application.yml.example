@@ -14,6 +14,12 @@ rollbar_access_token:
 newrelic_license_key:
 newrelic_api_key:
 
+smtp_address: email-smtp.us-east-1.amazonaws.com
+smtp_helo_domain_name: zazoapp.com
+smtp_user_name:
+smtp_password:
+smtp_port: '587'
+
 sqs_queue_url:
 
 rspec_profile_examples: false

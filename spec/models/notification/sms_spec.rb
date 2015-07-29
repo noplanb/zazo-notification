@@ -41,8 +41,6 @@ RSpec.describe Notification::Sms, type: :model do
         end
       end
 
-      it { is_expected.to be true }
-
       context 'errors' do
         before { instance.notify }
         subject { instance.errors }
@@ -50,6 +48,11 @@ RSpec.describe Notification::Sms, type: :model do
         specify do
           is_expected.to be_empty
         end
+      end
+
+      context '#valid?' do
+        subject { instance.valid? }
+        it { is_expected.to be true }
       end
 
       context 'original_response' do
@@ -84,8 +87,6 @@ RSpec.describe Notification::Sms, type: :model do
         let(:event_params) do
           { initiator: 'service',
             initiator_id: 'notification',
-            target: 'user',
-            target_id: mobile_number,
             data: {
               from: from,
               to: mobile_number,
@@ -114,26 +115,27 @@ RSpec.describe Notification::Sms, type: :model do
         end
       end
 
-      it { is_expected.to be false }
+      before { instance.notify }
+      subject { instance }
+
+      it { is_expected.to be_invalid }
 
       context 'original_response' do
-        before { instance.notify }
         subject { instance.original_response }
 
         specify do
           is_expected.to eq('code' => code,
                             'message' => message,
                             'more_info' => "https://www.twilio.com/docs/errors/#{code}",
-                             'status' => 400)
+                            'status' => 400)
         end
       end
 
       context 'errors.messages' do
-        before { instance.notify }
         subject { instance.errors.messages }
 
         specify do
-          is_expected.to eq(twilio: [message])
+          is_expected.to eq(:'Twilio::REST::RequestError' => [message])
         end
       end
     end

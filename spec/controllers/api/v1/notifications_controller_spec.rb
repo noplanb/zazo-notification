@@ -16,10 +16,15 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
     specify do
       expect(json_response).to eq('data' =>
-       [{ 'name' => 'sms',
-          'description' => 'SMS notification via Twilio',
-          'required_params' => %w(mobile_number body) }],
-                                  'meta' => { 'total' => 1 })
+       [
+         { 'name' => 'email',
+           'description' => 'Notification via Email over AWS',
+           'required_params' => %w(to subject body) },
+         { 'name' => 'sms',
+           'description' => 'SMS notification via Twilio',
+           'required_params' => %w(mobile_number body) }
+       ],
+                                  'meta' => { 'total' => 2 })
     end
   end
 
@@ -31,7 +36,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
       before do
         authenticate_with_http_digest do
-          post :create, { id: id }.merge(params)
+          post :create, { id: 'unknown' }.merge(params)
         end
       end
 
@@ -41,13 +46,13 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
     end
 
     describe 'sms' do
+      let(:id) { 'sms' }
       let(:mobile_number) { '+380939523746' }
       let(:body) { 'Hello from Zazo!' }
       let(:instance) { Notification::Sms.new(params) }
       let(:twilio_ssid) { instance.twilio_ssid }
       let(:twilio_token) { instance.twilio_token }
       let(:from) { instance.from }
-      let(:id) { 'sms' }
       let(:params) { { mobile_number: mobile_number, body: body } }
 
       context 'when body is missing' do
@@ -86,7 +91,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
         before do
           allow_any_instance_of(Notification::Sms).to receive(:original_response).and_return(original_response)
-          allow_any_instance_of(Notification::Sms).to receive(:create_message).and_raise(Twilio::REST::RequestError.new(message, code))
+          allow_any_instance_of(Notification::Sms).to receive(:do_notify).and_raise(Twilio::REST::RequestError.new(message, code))
         end
 
         before do
@@ -99,7 +104,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           expect(json_response).to eq(
             'status' => 'failure',
             'errors' => {
-              'twilio' => [message]
+              'Twilio::REST::RequestError' => [message]
             },
             'original_response' => original_response)
         end
@@ -135,7 +140,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
         before do
           allow_any_instance_of(Notification::Sms).to receive(:original_response).and_return(original_response)
-          allow_any_instance_of(Notification::Sms).to receive(:notify).and_return(true)
+          allow_any_instance_of(Notification::Sms).to receive(:do_notify).and_return(true)
         end
 
         context 'response' do
@@ -156,7 +161,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           end
         end
 
-        context 'event notification', pending: 'FIXME: why not calls' do
+        context 'event notification' do
           subject do
             authenticate_with_http_digest do
               post :create, { id: id }.merge(params)
@@ -166,8 +171,6 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           let(:event_params) do
             { initiator: 'service',
               initiator_id: service,
-              target: 'user',
-              target_id: mobile_number,
               data: {
                 from: from,
                 to: mobile_number,
