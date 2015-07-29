@@ -4,7 +4,6 @@ defaults: &defaults
   authentication_method: digest
   stub_mobile_number: false
   notification_mailer:
-    # default_from: Zazo <support@zazoapp.com>
     default_from: Sani Elfishawy <elfishawy.sani@gmail.com>
   rspec:
     profile_examples: 10
