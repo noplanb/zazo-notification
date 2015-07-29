@@ -63,12 +63,27 @@ RSpec.describe Notification::Email, type: :model do
           it { is_expected.to eq(email_body) }
         end
       end
+
+      describe '#original_response' do
+        subject { instance.original_response }
+        it { is_expected.to be nil }
+      end
+
+      describe '#mail' do
+        subject { instance.mail }
+        it { is_expected.to be_a(Mail::Message) }
+      end
     end
 
     context 'on error' do
       subject { instance }
-      before { allow(instance).to receive(:do_notify).and_raise(Net::SMTPFatalError.new('554 Message rejected: Email address is not verified.
-')) }
+      let(:error) do
+        Net::SMTPFatalError.new('554 Message rejected: Email address is not verified.
+')
+      end
+      before do
+        allow(instance).to receive(:do_notify).and_raise(error)
+      end
 
       context 'valid?' do
         before { instance.notify }
@@ -85,6 +100,12 @@ RSpec.describe Notification::Email, type: :model do
       specify do
         expect(instance).to receive(:handle_error)
         instance.notify
+      end
+
+
+      describe '#mail' do
+        subject { instance.mail }
+        it { is_expected.to be nil }
       end
     end
   end

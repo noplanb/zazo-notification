@@ -1,6 +1,7 @@
 class Notification::Email < Notification::Base
   REQUIRED_PARAMS = %w(to subject body).freeze
   attr_accessor :from, :to, :subject, :body
+  attr_reader :mail
 
   validates :to, :subject, :body, presence: true
 
@@ -10,10 +11,6 @@ class Notification::Email < Notification::Base
 
   def do_notify
     @mail = Notification::Mailer.notification(mail_params).deliver_now
-  end
-
-  def original_response
-    @mail.try(:header_fields)
   end
 
   protected

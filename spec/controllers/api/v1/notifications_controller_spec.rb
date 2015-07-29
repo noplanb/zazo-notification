@@ -140,7 +140,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
 
         before do
           allow_any_instance_of(Notification::Sms).to receive(:original_response).and_return(original_response)
-          allow_any_instance_of(Notification::Sms).to receive(:notify).and_return(true)
+          allow_any_instance_of(Notification::Sms).to receive(:do_notify).and_return(true)
         end
 
         context 'response' do
@@ -161,7 +161,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           end
         end
 
-        context 'event notification', pending: 'FIXME: why not calls' do
+        context 'event notification' do
           subject do
             authenticate_with_http_digest do
               post :create, { id: id }.merge(params)
@@ -171,7 +171,6 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           let(:event_params) do
             { initiator: 'service',
               initiator_id: service,
-              target_id: mobile_number,
               data: {
                 from: from,
                 to: mobile_number,
