@@ -9,6 +9,8 @@ class Notification::Email < Notification::Base
 
   validates :to, :subject, :body, presence: true
   validates :to, format: { with: EMAIL_REGEXP }
+  validates :content_type, inclusion: { in: MIME::Types,
+                                        message: 'is not valid MIME type' }
 
   def self.description
     'Notification via Email over AWS'

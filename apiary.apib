@@ -302,6 +302,33 @@ Notification via Email over AWS
             "original_response": null
         }
 
++ Request Invalid Content Type (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "subject": "Zazo Notification",
+                "body": "<h1>Hi there!</h1><p>This is test mail from Zazo.</p>",
+                "to": "Alex Ulianytsky <a.ulyanitsky@gmail.com>",
+                "content_type":"foo/unknown"
+            }
+
++ Response 422 (application/json; charset=utf-8)
+
+        {
+            "status": "invalid",
+            "errors": {
+                "content_type": [
+                    "is not valid MIME type"
+                ]
+            },
+            "original_response": null
+        }
+
 + Request Failure (application/json)
 
     + Headers

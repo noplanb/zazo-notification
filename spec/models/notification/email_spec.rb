@@ -45,6 +45,7 @@ RSpec.describe Notification::Email, type: :model do
                                      'test.i.ua', '<> <test@test.com>',
                                      '<> test@test.com').for(:to)
     end
+    it { is_expected.to_not allow_value('foo/unknown').for(:content_type) }
   end
 
   describe '#event_data' do
