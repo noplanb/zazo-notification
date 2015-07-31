@@ -3,10 +3,11 @@ require 'rails_helper'
 RSpec.describe Notification::Email, type: :model do
   let(:instance) { described_class.new(params) }
 
-  let(:email_from) { 'support@zazoapp.com' }
+  let(:email_from) { described_class::DEFAULT_FROM }
   let(:email_to) { Faker::Internet.email }
   let(:email_subject) { 'Testing Zazo notifications' }
   let(:email_body) { Faker::Lorem.paragraph }
+  let(:email_content_type) { described_class::DEFAULT_CONTENT_TYPE }
   let(:params) { { to: email_to, subject: email_subject, body: email_body } }
 
   describe 'after initialize' do
@@ -24,14 +25,31 @@ RSpec.describe Notification::Email, type: :model do
       subject { instance.body }
       it { is_expected.to eq(email_body) }
     end
+
+    context '#content_type' do
+      subject { instance.content_type }
+      it { is_expected.to eq(email_content_type) }
+    end
   end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:to) }
-    it { is_expected.to validate_presence_of(:body) }
     it { is_expected.to validate_presence_of(:subject) }
-    it { is_expected.to allow_value('test@example.com', 'test+1@example.com', 'test@i.ua').for(:to) }
-    it { is_expected.to_not allow_value('test@example', 'test$3%@example.com', 'test.i.ua').for(:to) }
+    it { is_expected.to validate_presence_of(:body) }
+    it do
+      is_expected.to allow_value('test@example.com', 'test+1@example.com',
+                                 'test@i.ua', 'Test test <test@example.com>').for(:to)
+    end
+    it do
+      is_expected.to_not allow_value('test@example', 'test$3%@example.com',
+                                     'test.i.ua', '<> <test@test.com>',
+                                     '<> test@test.com').for(:to)
+    end
+  end
+
+  describe '#event_data' do
+    subject { instance.event_data }
+    it { is_expected.to eq(params.merge(from: email_from, content_type: email_content_type)) }
   end
 
   describe '#notify' do
@@ -49,6 +67,8 @@ RSpec.describe Notification::Email, type: :model do
       context 'last mail' do
         let(:mail) { ActionMailer::Base.deliveries.last }
         subject { mail }
+
+        it { is_expected.to be_present }
 
         context 'subject' do
           subject { mail.subject }
@@ -71,8 +91,8 @@ RSpec.describe Notification::Email, type: :model do
         it { is_expected.to be nil }
       end
 
-      describe '#mail' do
-        subject { instance.mail }
+      describe '#delivery' do
+        subject { instance.delivery }
         it { is_expected.to be_a(Mail::Message) }
       end
     end
@@ -104,9 +124,8 @@ RSpec.describe Notification::Email, type: :model do
         instance.notify
       end
 
-
-      describe '#mail' do
-        subject { instance.mail }
+      describe '#delivery' do
+        subject { instance.delivery }
         it { is_expected.to be nil }
       end
     end

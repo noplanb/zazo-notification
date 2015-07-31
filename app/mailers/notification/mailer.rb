@@ -7,13 +7,6 @@ class Notification::Mailer < ApplicationMailer
   #   en.notification.mailer.notification.subject
   #
   def notification(params)
-    subject = params[:subject]
-    to = params[:to]
-    from = params[:from] if params[:from]
-    body = params[:body]
-
-    mail from: from, to: to, subject: subject do |format|
-      format.text { render text: body }
-    end
+    mail(params)
   end
 end

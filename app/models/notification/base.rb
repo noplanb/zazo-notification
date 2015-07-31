@@ -53,14 +53,6 @@ class Notification::Base
   def do_notify
   end
 
-  protected
-
-  def handle_error(error)
-    log_error(error)
-    notify_rollbar(error)
-    errors.add(error.class.name, error.message)
-  end
-
   def event_data
   end
 
@@ -85,6 +77,14 @@ class Notification::Base
 
   def notify_rollbar(error)
     Rollbar.warning(error)
+  end
+
+  protected
+
+  def handle_error(error)
+    log_error(error)
+    notify_rollbar(error)
+    errors.add(error.class.name, error.message)
   end
 
   def set_attributes

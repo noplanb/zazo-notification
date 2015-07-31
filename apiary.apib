@@ -222,11 +222,13 @@ Send SMS via Twilio service.
 Notification via Email over AWS
 
 + Parameters
-    + to: Alex Ulianytskyi <a.ulyanitsky@gmail.com> (string) - Recipient address
-    + subject: Zazo Notification (string) - Subject of mail
-    + body: Hello from Zazo! (string) - Mail body for HTML and text parts
-    + from: Zazo <support@zazoapp.com> (string, optional) - Override from address
+    + to: Alex Ulianytskyi <a.ulyanitsky@gmail.com> (string) - Recipient's address.
+    + subject: Zazo Notification (string) - Subject of mail.
+    + body: Hello from Zazo! (string) - Mail body as HTML or plain text.
+    + from: Zazo <support@zazoapp.com> (string, optional) - Sender's address.
         + Default: Sani Elfishawy <elfishawy.sani@gmail.com>
+    + content_type: `text/html; charset=utf-8` (string, optional) - Message *Content-Type* header.
+        + Default: `text/html; charset=utf-8`
 
 + Request Success (application/json)
 
