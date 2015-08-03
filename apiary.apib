@@ -70,16 +70,27 @@ List of available notifications
 
 
         {
-            "status": "success",
             "data": [
+                {
+                    "name": "email",
+                    "description": "Notification via Email over AWS",
+                    "required_params": [
+                        "to",
+                        "subject",
+                        "body"
+                    ]
+                },
                 {
                     "name": "sms",
                     "description": "SMS notification via Twilio",
-                    "required_params": ["mobile_number", "body"]
+                    "required_params": [
+                        "mobile_number",
+                        "body"
+                    ]
                 }
             ],
             "meta": {
-                "total": 1
+                "total": 2
             }
         }
 
@@ -133,7 +144,7 @@ Send SMS via Twilio service.
                 "date_created": "Thu, 19 Mar 2015 22:52:19 +0000",
                 "date_updated": "Thu, 19 Mar 2015 22:52:19 +0000",
                 "date_sent": null,
-                "account_sid": "<twilio_sid>",
+                "account_sid": "twilio_sid",
                 "to": "+380939523746",
                 "from": "+16503766005",
                 "body": "Zazo access code: 623030",
@@ -146,9 +157,9 @@ Send SMS via Twilio service.
                 "price_unit": "USD",
                 "error_code": null,
                 "error_message": null,
-                "uri": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf.json",
+                "uri": "/2010-04-01/Accounts/twilio_ssid/Messages/SM272eb583ba9f40859abd816e97958bbf.json",
                 "subresource_uris": {
-                    "media": "/2010-04-01/Accounts/<twilio_ssid>/Messages/SM272eb583ba9f40859abd816e97958bbf/Media.json"
+                    "media": "/2010-04-01/Accounts/twilio_ssid/Messages/SM272eb583ba9f40859abd816e97958bbf/Media.json"
                 }
            }
         }
@@ -192,7 +203,7 @@ Send SMS via Twilio service.
         {
             "status": "failure",
             "errors": {
-                "twilio": [
+                "Twilio::REST::RequestError": [
                     "'To' number is not a valid mobile number"
                 ]
             },
@@ -204,4 +215,143 @@ Send SMS via Twilio service.
                   "status": 400
                 }
             ]
+        }
+
+### Email [POST /api/v1/notifications/email]
+
+Notification via Email over AWS
+
++ Parameters
+    + to: Alex Ulianytskyi <a.ulyanitsky@gmail.com> (string) - Recipient's address.
+    + subject: Zazo Notification (string) - Subject of mail.
+    + body: Hello from Zazo! (string) - Mail body as HTML or plain text.
+    + from: Zazo <support@zazoapp.com> (string, optional) - Sender's address.
+        + Default: Sani Elfishawy <elfishawy.sani@gmail.com>
+    + content_type: `text/html; charset=utf-8` (string, optional) - Message *Content-Type* header.
+        + Default: `text/html; charset=utf-8`
+
++ Request Success (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "to": "Alex Ulianytskyi <a.ulyanitsky@gmail.com>",
+                "subject": "Zazo Notification",
+                "body":"Hello from Zazo!"
+            }
+
++ Response 200 (application/json; charset=utf-8')
+
+        {
+            "status": "success",
+            "original_response": null
+        }
+
++ Request Parameter `to` is missing (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "subject": "Zazo Notification",
+                "body":"Hello from Zazo!"
+            }
+
++ Response 422 (application/json; charset=utf-8')
+
+        {
+            "status": "invalid",
+            "errors": {
+                "to": [
+                    "can't be blank"
+                ]
+            },
+            "original_response": null
+        }
+
++ Request Invalid `to` parameter (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "subject": "Zazo Notification",
+                "body": "Hello from Zazo!",
+                "to": "test@example"
+            }
+
++ Response 422 (application/json; charset=utf-8)
+
+        {
+            "status": "invalid",
+            "errors": {
+                "to": [
+                    "is invalid"
+                ]
+            },
+            "original_response": null
+        }
+
++ Request Invalid Content Type (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "subject": "Zazo Notification",
+                "body": "<h1>Hi there!</h1><p>This is test mail from Zazo.</p>",
+                "to": "Alex Ulianytsky <a.ulyanitsky@gmail.com>",
+                "content_type":"foo/unknown"
+            }
+
++ Response 422 (application/json; charset=utf-8)
+
+        {
+            "status": "invalid",
+            "errors": {
+                "content_type": [
+                    "is not valid MIME type"
+                ]
+            },
+            "original_response": null
+        }
+
++ Request Failure (application/json)
+
+    + Headers
+
+            Authorization: Basic cmVub3RpZmljYXRpb246dThyZCZkNFkzTjQyOXpXMyRRKD1YOGJL
+
+    + Body
+
+            {
+                "to": "Alex Ulianytsky <a.ulyanitsky@gmail.com>",
+                "subject": "Zazo Notification",
+                "body": "Hello from Zazo!",
+                "from": "Zazo Support <support@zazoapp.com>"
+            }
+
++ Response 400 (application/json; charset=utf-8')
+
+        {
+            "status": "failure",
+            "errors": {
+                "Net::SMTPFatalError": [
+                    "554 Message rejected: Email address is not verified.\n"
+                ]
+            },
+            "original_response": null
         }

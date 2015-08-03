@@ -1,4 +1,5 @@
-class Credentials < Settingslogic
-  source "#{Rails.root}/config/credentials.yml"
-  namespace Rails.env
+class Credentials
+  def self.password_for(client)
+    ENV["#{client}_password"]
+  end
 end
