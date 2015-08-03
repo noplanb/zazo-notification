@@ -22,6 +22,9 @@ smtp_port: '587'
 
 sqs_queue_url:
 
+notification_password:
+renotification_password:
+
 rspec_profile_examples: false
 
 test:
@@ -29,3 +32,5 @@ test:
 
 production:
   secret_key_base:
+  notification_password:
+  renotification_password:

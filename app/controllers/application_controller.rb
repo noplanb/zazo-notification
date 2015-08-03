@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
     authenticate_or_request_with_http_basic(REALM) do |username, password|
       Rails.logger.info "Authenticating service: #{username}"
       self.current_service = username
-      Credentials.services[username] == password
+      Credentials.password_for(username) == password
     end
   end
 
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::API
     authenticate_or_request_with_http_digest(REALM) do |username|
       Rails.logger.info "Authenticating service: #{username}"
       self.current_service = username
-      Credentials.services[username]
+      Credentials.password_for(username)
     end
   end
 
