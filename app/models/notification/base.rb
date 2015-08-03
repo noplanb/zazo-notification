@@ -1,7 +1,7 @@
 class Notification::Base
   extend ActiveModel::Callbacks
   include ActiveModel::Validations
-  attr_reader :params, :service
+  attr_reader :params, :client
 
   REQUIRED_PARAMS = []
 
@@ -57,8 +57,8 @@ class Notification::Base
   end
 
   def event
-    { initiator: 'service',
-      initiator_id: service,
+    { initiator: 'client',
+      initiator_id: client,
       data: event_data,
       raw_params: params }
   end
@@ -88,7 +88,7 @@ class Notification::Base
   end
 
   def set_attributes
-    @service = params[:service]
+    @client = params[:client]
   end
   after_initialize :set_attributes
 end

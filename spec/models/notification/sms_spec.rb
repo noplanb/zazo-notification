@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Notification::Sms, type: :model do
   let(:mobile_number) { '+380939523746' }
   let(:body) { 'Hello from Zazo!' }
-  let(:service) { 'notification' }
-  let(:params) { { service: service, mobile_number: mobile_number, body: body } }
+  let(:client) { 'notification' }
+  let(:params) { { client: client, mobile_number: mobile_number, body: body } }
   let(:instance) { described_class.new(params) }
   let(:twilio_ssid) { instance.twilio_ssid }
   let(:twilio_token) { instance.twilio_token }
@@ -85,7 +85,7 @@ RSpec.describe Notification::Sms, type: :model do
 
       context 'event notification' do
         let(:event_params) do
-          { initiator: 'service',
+          { initiator: 'client',
             initiator_id: 'notification',
             data: {
               from: from,

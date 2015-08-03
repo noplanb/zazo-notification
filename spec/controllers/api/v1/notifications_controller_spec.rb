@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::NotificationsController, type: :controller do
-  let(:service) { 'notification' }
+  let(:client) { 'notification' }
 
   describe 'GET #index' do
     before do
@@ -169,14 +169,14 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
           end
 
           let(:event_params) do
-            { initiator: 'service',
-              initiator_id: service,
+            { initiator: 'client',
+              initiator_id: client,
               data: {
                 from: from,
                 to: mobile_number,
                 body: body
               },
-              raw_params: params.merge(service: service) }
+              raw_params: params.merge(client: client) }
           end
 
           it_behaves_like 'event dispatchable', %w(notification sms)

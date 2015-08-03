@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Digest::ControllerMethods
 
   REALM = Settings.app_name
-  attr_accessor :current_service
+  attr_accessor :current_client
 
   before_action :authenticate, except: [:status]
 
@@ -28,8 +28,8 @@ class ApplicationController < ActionController::API
 
   def authenticate_with_basic
     authenticate_or_request_with_http_basic(REALM) do |username, password|
-      Rails.logger.info "Authenticating service: #{username}"
-      self.current_service = username
+      Rails.logger.info "Authenticating client: #{username}"
+      self.current_client = username
       Credentials.password_for(username) == password
     end
   end
@@ -41,8 +41,8 @@ class ApplicationController < ActionController::API
 
   def authenticate_with_digest
     authenticate_or_request_with_http_digest(REALM) do |username|
-      Rails.logger.info "Authenticating service: #{username}"
-      self.current_service = username
+      Rails.logger.info "Authenticating client: #{username}"
+      self.current_client = username
       Credentials.password_for(username)
     end
   end

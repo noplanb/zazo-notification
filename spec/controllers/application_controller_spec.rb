@@ -31,7 +31,7 @@ RSpec.describe ApplicationController, type: :controller do
         end
 
         specify do
-          expect(controller.current_service).to eq(username)
+          expect(controller.current_client).to eq(username)
         end
       end
 
@@ -59,7 +59,7 @@ RSpec.describe ApplicationController, type: :controller do
 
         specify do
           pending 'FIXME: realize why code not works'
-          expect(controller.current_service).to eq(username)
+          expect(controller.current_client).to eq(username)
         end
 
         specify do
