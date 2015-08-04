@@ -1,7 +1,6 @@
 class Notification::Sms < Notification::Base
   REQUIRED_PARAMS = %w(mobile_number body).freeze
-  attr_accessor :service, :mobile_number, :from, :body
-  after_initialize :set_attributes
+  attr_accessor :mobile_number, :from, :body
 
   validates :mobile_number, :body, :from, presence: true
 
@@ -29,53 +28,22 @@ class Notification::Sms < Notification::Base
     JSON.parse(twilio.last_response.body)
   end
 
-  def notify
-    create_message
-    log_success
-    send_event
-    true
-  rescue Twilio::REST::RequestError => error
-    handle_twilio_error(error)
-    false
-  end
-
-  def create_message
+  def do_notify
     twilio.messages.create(from: from, to: to, body: body)
   end
 
   protected
 
-  def log_success
-    Rails.logger.info "#{self.class.name}: [#{to}] #{body}"
-  end
-
-  def handle_twilio_error(error)
-    Rollbar.warning(error)
-    Rails.logger.error "ERROR: sms: #{error.class} ##{error.code}: #{error.message}"
-    errors.add(:twilio, error.message)
-  end
-
   def set_attributes
-    @service = @params[:service]
+    super
     @mobile_number = @params[:mobile_number]
     @from = @params[:from] || Figaro.env.twilio_from_number
     @body = @params[:body]
   end
 
-  def event
-    { initiator: 'service',
-      initiator_id: service,
-      target: 'user',
-      target_id: mobile_number,
-      data: {
-        from: from,
-        to: to,
-        body: body
-      },
-      raw_params: params }
-  end
-
-  def send_event
-    EventDispatcher.emit(%w(notification sms), event)
+  def event_data
+    { from: from,
+      to: to,
+      body: body }
   end
 end

@@ -1,7 +1,7 @@
 class Notification::Base
   extend ActiveModel::Callbacks
   include ActiveModel::Validations
-  attr_reader :params
+  attr_reader :params, :client
 
   REQUIRED_PARAMS = []
 
@@ -36,8 +36,59 @@ class Notification::Base
   end
 
   def notify
+    do_notify
+    log_success
+    send_event
+  rescue StandardError => error
+    handle_error(error)
   end
 
   def original_response
   end
+
+  def valid?(context = nil)
+    errors.empty? && super(context)
+  end
+
+  def do_notify
+  end
+
+  def event_data
+  end
+
+  def event
+    { initiator: 'client',
+      initiator_id: client,
+      data: event_data,
+      raw_params: params }
+  end
+
+  def send_event
+    EventDispatcher.emit(['notification', self.class.notification_name], event)
+  end
+
+  def log_success
+    Rails.logger.info "#{self.class.notification_name}: #{params}"
+  end
+
+  def log_error(error)
+    Rails.logger.error "#{self.class.notification_name}: #{error.inspect}"
+  end
+
+  def notify_rollbar(error)
+    Rollbar.warning(error)
+  end
+
+  protected
+
+  def handle_error(error)
+    log_error(error)
+    notify_rollbar(error)
+    errors.add(error.class.name, error.message)
+  end
+
+  def set_attributes
+    @client = params[:client]
+  end
+  after_initialize :set_attributes
 end

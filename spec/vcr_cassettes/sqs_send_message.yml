@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <%= queue_url %>
+    body:
+      encoding: UTF-8
+      string: Action=SendMessage&MessageBody=%7B%22name%22%3A%5B%22event_dispatcher%22%2C%22test%22%5D%2C%22triggered_by%22%3A%22zazo%3Aapi%22%2C%22triggered_at%22%3A%222015-07-28T20%3A49%3A19.048%2B00%3A00%22%2C%22initiator%22%3A%22user%22%2C%22initiator_id%22%3A%221%22%7D&QueueUrl=<%= CGI.escape queue_url %>&Version=2012-11-05
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby2/2.0.41 ruby/2.2.2 x86_64-darwin14
+      X-Amz-Date:
+      - 20150728T204919Z
+      Host:
+      - <%= URI(queue_url).host %>
+      X-Amz-Content-Sha256:
+      - 749798b3e1579568975546c698d30bfa92af3025777741990add85009749224d
+      Authorization:
+      - AWS4-HMAC-SHA256 Credential=<%= access_key %>/20150728/us-west-1/sqs/aws4_request,
+        SignedHeaders=content-type;host;user-agent;x-amz-content-sha256;x-amz-date,
+        Signature=00c18e9104b55c9f53adeecdaa9a8f08476763e804b88c35ca034d8ac5c90b1c
+      Content-Length:
+      - '373'
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Server
+      Date:
+      - Tue, 28 Jul 2015 20:49:20 GMT
+      Content-Type:
+      - text/xml
+      Content-Length:
+      - '378'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 2e98026b-e84a-526c-9c2b-4c5a055a55c3
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0"?><SendMessageResponse xmlns="http://queue.amazonaws.com/doc/2012-11-05/"><SendMessageResult><MessageId>ebe2578c-febf-42b2-9ac0-991d28c78b65</MessageId><MD5OfMessageBody>4d13cee6cd3c58d9b2fffb6fc3aa0779</MD5OfMessageBody></SendMessageResult><ResponseMetadata><RequestId>2e98026b-e84a-526c-9c2b-4c5a055a55c3</RequestId></ResponseMetadata></SendMessageResponse>
+    http_version:
+  recorded_at: Tue, 28 Jul 2015 20:49:20 GMT
+recorded_with: VCR 2.9.3

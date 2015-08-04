@@ -31,7 +31,7 @@ RSpec.describe ApplicationController, type: :controller do
         end
 
         specify do
-          expect(controller.current_service).to eq(username)
+          expect(controller.current_client).to eq(username)
         end
       end
 
@@ -48,9 +48,8 @@ RSpec.describe ApplicationController, type: :controller do
 
       context 'when authenticated' do
         before do
-          authenticate_with_http_basic do
-            get :settings
-          end
+          authenticate_with_http_basic
+          get :settings
         end
 
         specify do
@@ -58,12 +57,10 @@ RSpec.describe ApplicationController, type: :controller do
         end
 
         specify do
-          pending 'FIXME: realize why code not works'
-          expect(controller.current_service).to eq(username)
+          expect(controller.current_client).to eq(username)
         end
 
         specify do
-          pending 'FIXME: realize why code not works'
           expect(json_response).to be_a(Hash)
         end
       end

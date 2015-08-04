@@ -1,8 +1,10 @@
 defaults: &defaults
   app_name: Zazo Notification
-  version: 0.1.0
+  version: 0.2.0
   authentication_method: digest
   stub_mobile_number: false
+  notification_mailer:
+    default_from: Sani Elfishawy <elfishawy.sani@gmail.com>
   rspec:
     profile_examples: 10
 
