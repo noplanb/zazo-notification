@@ -62,12 +62,12 @@ class GenericPushNotification
     status
   end
 
-  def handle_unregistered_ios_devices
-    unregistered_devs = unregistered_devices
-    Rollbar.info('APNS returned non-empty unregistered devices', unregistered_devices: unregistered_devs) unless unregistered_devs.empty?
-  end
-
   def send_android
     GcmServer.send_notification(@token, @payload)
+  end
+
+  def handle_unregistered_ios_devices
+    devices = unregistered_devices
+    Rollbar.info('APNS returned non-empty unregistered devices', unregistered_devices: devices) unless devices.empty?
   end
 end

@@ -12,6 +12,7 @@ gem 'pry-rails'
 gem 'puma'
 gem 'rails-api'
 gem 'rollbar'
+gem 'hashie'
 gem 'settingslogic'
 gem 'twilio-ruby'
 
@@ -22,7 +23,7 @@ group :development, :test do
   gem 'dredd-rack'
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 1.3.3'
   gem 'pry-remote'
   gem 'pry-rescue'
   gem 'rspec-rails'
@@ -49,7 +50,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', require: false
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'vcr'

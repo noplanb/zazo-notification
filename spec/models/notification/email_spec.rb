@@ -101,8 +101,7 @@ RSpec.describe Notification::Email, type: :model do
     context 'on error' do
       subject { instance }
       let(:error) do
-        Net::SMTPFatalError.new('554 Message rejected: Email address is not verified.
-')
+        Net::SMTPFatalError.new('554 Message rejected: Email address is not verified.')
       end
       before do
         allow(instance).to receive(:do_notify).and_raise(error)
