@@ -5,6 +5,7 @@ gem 'rails', '~> 4.2.3'
 gem 'awesome_print'
 gem 'aws-sdk', '~> 2'
 gem 'faraday'
+gem 'faraday_middleware'
 gem 'figaro', github: 'fny/figaro', branch: 'elastic-beanstalk-support'
 gem 'newrelic_rpm'
 gem 'pry-rails'
@@ -13,6 +14,9 @@ gem 'rails-api'
 gem 'rollbar'
 gem 'settingslogic'
 gem 'twilio-ruby'
+
+gem 'gcm'
+gem 'houston'
 
 group :development, :test do
   gem 'dredd-rack'

@@ -75,6 +75,8 @@ GEM
       xpath (~> 2.0)
     coderay (1.1.0)
     columnize (0.9.0)
+    commander (4.3.5)
+      highline (~> 1.7.2)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.4.1)
@@ -95,9 +97,14 @@ GEM
       i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.10.0)
+      faraday (>= 0.7.4, < 0.10)
     ffi (1.9.10)
     filetree (1.0.0)
     formatador (0.2.5)
+    gcm (0.1.0)
+      httparty
+      json
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     guard (2.12.9)
@@ -129,6 +136,13 @@ GEM
     guard-rubocop (1.2.0)
       guard (~> 2.0)
       rubocop (~> 0.20)
+    highline (1.7.8)
+    houston (2.2.3)
+      commander (~> 4.1)
+      json
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     interception (0.5)
     jmespath (1.0.2)
@@ -152,6 +166,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.2)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
     nenv (0.2.0)
     newrelic_rpm (3.12.1.298)
@@ -327,13 +342,16 @@ DEPENDENCIES
   factory_girl_rails
   faker
   faraday
+  faraday_middleware
   figaro!
+  gcm
   guard-bundler
   guard-pow
   guard-rails
   guard-rake
   guard-rspec
   guard-rubocop
+  houston
   launchy
   newrelic_rpm
   pry-byebug
@@ -358,6 +376,3 @@ DEPENDENCIES
   twilio-ruby
   vcr
   webmock
-
-BUNDLED WITH
-   1.10.5
