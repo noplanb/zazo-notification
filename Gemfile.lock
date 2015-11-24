@@ -137,6 +137,7 @@ GEM
       guard (~> 2.0)
       rubocop (~> 0.20)
     hashdiff (0.2.3)
+    hashie (3.4.3)
     highline (1.7.8)
     houston (2.2.3)
       commander (~> 4.1)
@@ -355,6 +356,7 @@ DEPENDENCIES
   guard-rake
   guard-rspec
   guard-rubocop
+  hashie
   houston
   launchy
   newrelic_rpm

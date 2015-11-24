@@ -1,13 +1,14 @@
 class Notification::Mobile < Notification::Base
-  REQUIRED_PARAMS = %w(subject content device_build device_token device_platform).freeze
+  REQUIRED_PARAMS = %w(subject device_build device_token device_platform payload).freeze
   ALLOWED_DEVICE_PLATFORMS = %w(ios android)
   ALLOWED_DEVICE_BUILDS    = %w(dev prod)
 
-  attr_reader   :payload, :response
-  attr_accessor :subject, :content, :device_build, :device_token, :device_platform
-  validates     :subject, :content, :device_build, :device_token, :device_platform, presence: true
+  attr_reader   :response
+  attr_accessor :subject, :device_build, :device_token, :device_platform, :payload
+  validates     :subject, :device_build, :device_token, :device_platform, :payload, presence: true
   validates     :device_platform, inclusion: { in: ALLOWED_DEVICE_PLATFORMS, message: 'is not valid device platform' }
   validates     :device_build, inclusion: { in: ALLOWED_DEVICE_BUILDS, message: 'is not valid device build' }
+  validates_with PayloadStructureValidator
 
   def self.description
     'Mobile notification for iOS or Android'
@@ -27,15 +28,10 @@ class Notification::Mobile < Notification::Base
   def set_attributes
     super
     @subject = params[:subject]
-    @content = params[:content]
     @device_build = params[:device_build]
     @device_token = params[:device_token]
     @device_platform = params[:device_platform]
-    @payload = {
-      type: 'friend_joined',
-      content: content,
-      subject: subject
-    }
+    @payload = params[:payload]
   end
 
   private

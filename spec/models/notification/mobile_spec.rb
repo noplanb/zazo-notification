@@ -8,22 +8,22 @@ RSpec.describe Notification::Mobile, type: :model do
   let(:mobile_device_token) { SecureRandom.hex }
   let(:mobile_device_build) { described_class::ALLOWED_DEVICE_BUILDS.sample }
   let(:mobile_device_platform) { described_class::ALLOWED_DEVICE_PLATFORMS.sample }
+  let(:mobile_payload) do
+    { type: 'friend_joined',
+      content: mobile_content }
+  end
 
   let(:params) do
     { subject: mobile_subject,
-      content: mobile_content,
       device_build: mobile_device_build,
       device_token: mobile_device_token,
-      device_platform: mobile_device_platform }
+      device_platform: mobile_device_platform,
+      payload: mobile_payload }
   end
 
   describe 'after initialize' do
     context '#subject' do
       it { expect(instance.subject).to eq(mobile_subject) }
-    end
-
-    context '#content' do
-      it { expect(instance.content).to eq(mobile_content) }
     end
 
     context '#device_build' do
@@ -41,10 +41,32 @@ RSpec.describe Notification::Mobile, type: :model do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:subject) }
-    it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:device_build) }
     it { is_expected.to validate_presence_of(:device_token) }
     it { is_expected.to validate_presence_of(:device_platform) }
+    it { is_expected.to validate_presence_of(:payload) }
+
+    describe 'payload structure validation' do
+      before { instance.valid? }
+
+      context 'correct payload' do
+        it { expect(instance).to be_valid }
+      end
+
+      context 'payload without type' do
+        let(:mobile_payload) { { content: mobile_content } }
+
+        it { expect(instance).to be_invalid }
+        it { expect(instance.errors.messages[:payload]).to eq ['type attribute should be persisted'] }
+      end
+
+      context 'payload is not a hash' do
+        let(:mobile_payload) { mobile_content }
+
+        it { expect(instance).to be_invalid }
+        it { expect(instance.errors.messages[:payload]).to eq ['should be type of hash'] }
+      end
+    end
   end
 
   describe '#notify' do

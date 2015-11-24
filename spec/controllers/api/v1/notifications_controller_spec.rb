@@ -22,7 +22,7 @@ RSpec.describe Api::V1::NotificationsController, type: :controller do
             'required_params' => %w(to subject body) },
           { 'name' => 'mobile',
             'description' => 'Mobile notification for iOS or Android',
-            'required_params' => %w(subject content device_build device_token device_platform) },
+            'required_params' => %w(subject device_build device_token device_platform payload) },
           { 'name' => 'sms',
             'description' => 'SMS notification via Twilio',
             'required_params' => %w(mobile_number body) }

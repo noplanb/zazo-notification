@@ -1,4 +1,8 @@
 class Notification::Base
+  class Params < Hash
+    include Hashie::Extensions::IndifferentAccess
+  end
+
   extend ActiveModel::Callbacks
   include ActiveModel::Validations
   attr_reader :params, :client
@@ -31,7 +35,7 @@ class Notification::Base
 
   def initialize(params = {})
     run_callbacks :initialize do
-      @params = params.symbolize_keys
+      @params = Params[params]
     end
   end
 
