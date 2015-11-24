@@ -46,7 +46,7 @@ class Notification::Mobile < Notification::Base
       @response = results.body
       response['failure'] == 1 && self.errors.add(:response, response['results'][0]['error'])
     else
-      self.errors.add(:response, 'body in not exist, possible server error')
+      self.errors.add(:response, 'response body in not exist, possible server error')
     end
   end
 

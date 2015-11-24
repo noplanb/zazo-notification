@@ -140,7 +140,7 @@ RSpec.describe Notification::Mobile, type: :model do
         end
 
         it { expect(instance).to be_invalid }
-        it { expect(instance.errors.to_json).to eq '{"response":["InvalidRegistration"]}' }
+        it { expect(instance.errors.messages[:response]).to eq ['InvalidRegistration'] }
       end
 
       context 'server error' do
@@ -149,7 +149,7 @@ RSpec.describe Notification::Mobile, type: :model do
         end
 
         it { expect(instance).to be_invalid }
-        it { expect(instance.errors.to_json).to eq '{"response":["body in not exist, possible server error"]}' }
+        it { expect(instance.errors.messages[:response]).to eq ['response body in not exist, possible server error'] }
       end
     end
 
