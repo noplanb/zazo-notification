@@ -3,7 +3,7 @@ class Notification::Mobile::PayloadStructureValidator < ActiveModel::Validator
     if record.payload.kind_of? Hash
       record.errors.add(:payload, 'type attribute should be persisted') unless record.payload[:type]
     else
-      record.errors.add(:payload, 'should be type of hash')
+      record.errors.add(:payload, 'should be type of hash') if record.payload
     end
   end
 end

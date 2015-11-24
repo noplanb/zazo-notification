@@ -25,17 +25,17 @@ class GenericPushNotification
 
   def ios_notification
     @notification ||= Houston::Notification.new(device: @token).tap do |n|
-      n.alert = @alert if @alert
-      n.badge = @badge if @badge
-      n.sound = @sound if @sound
-      n.content_available = @content_available
-      n.custom_data = @payload if @payload
+      n.alert = alert if alert
+      n.badge = badge if badge
+      n.sound = sound if sound
+      n.content_available = content_available
+      n.custom_data = payload if payload
     end
   end
 
   def apns
     @client ||= begin
-      if @build == :prod
+      if build == :prod
         client = Houston::Client.production
         client.certificate = File.read(Rails.root.join('certs/zazo_aps_prod.pem'))
       else
@@ -65,7 +65,7 @@ class GenericPushNotification
   end
 
   def send_android
-    GcmServer.send_notification(@token, @payload)
+    GcmServer.send_notification(token, payload)
   end
 
   def unregistered_ios_devices

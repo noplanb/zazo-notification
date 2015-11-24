@@ -10,6 +10,7 @@ class Notification::Base
   REQUIRED_PARAMS = []
 
   define_model_callbacks :initialize
+  after_initialize :set_attributes
 
   def self.required_params
     self::REQUIRED_PARAMS
@@ -35,7 +36,7 @@ class Notification::Base
 
   def initialize(params = {})
     run_callbacks :initialize do
-      @params = Params[params]
+      @params = wrap_params params
     end
   end
 
@@ -94,5 +95,8 @@ class Notification::Base
   def set_attributes
     @client = params[:client]
   end
-  after_initialize :set_attributes
+
+  def wrap_params(params)
+    Params[params]
+  end
 end

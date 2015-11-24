@@ -31,7 +31,7 @@ class Notification::Mobile < Notification::Base
     @device_build = params[:device_build]
     @device_token = params[:device_token]
     @device_platform = params[:device_platform]
-    @payload = params[:payload]
+    @payload = payload_with_required_attrs params[:payload]
   end
 
   private
@@ -59,5 +59,9 @@ class Notification::Mobile < Notification::Base
       alert: subject,
       badge: 1,
       payload: payload }
+  end
+
+  def payload_with_required_attrs(attrs)
+    attrs.kind_of?(Hash) ? wrap_params(attrs.merge(host: Figaro.env.zazo_domain_name)) : attrs
   end
 end

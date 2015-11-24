@@ -37,6 +37,17 @@ RSpec.describe Notification::Mobile, type: :model do
     context '#device_platform' do
       it { expect(instance.device_platform).to eq(mobile_device_platform) }
     end
+
+    context '#payload' do
+      it do
+        expected = {
+          'host' => Figaro.env.zazo_domain_name,
+          'type' => 'friend_joined',
+          'content' => mobile_content
+        }
+        expect(instance.payload).to eq expected
+      end
+    end
   end
 
   describe 'validations' do
