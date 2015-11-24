@@ -12,7 +12,6 @@ gem 'pry-rails'
 gem 'puma'
 gem 'rails-api'
 gem 'rollbar'
-gem 'hashie'
 gem 'settingslogic'
 gem 'twilio-ruby'
 

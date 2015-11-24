@@ -48,6 +48,11 @@ RSpec.describe Notification::Mobile, type: :model do
   end
 
   describe '#notify' do
+
+    #
+    # android platform
+    #
+
     context 'android platform' do
       let(:mobile_device_platform) { 'android' }
 
@@ -55,6 +60,7 @@ RSpec.describe Notification::Mobile, type: :model do
         before do
           VCR.use_cassette('gcm_send_with_success', erb: { key: 'gcmkey', payload: instance.payload }) { instance.notify }
         end
+
         it { expect(instance).to be_valid }
       end
 
@@ -62,6 +68,7 @@ RSpec.describe Notification::Mobile, type: :model do
         before do
           VCR.use_cassette('gcm_send_with_error', erb: { key: 'gcmkey', payload: instance.payload }) { instance.notify }
         end
+
         it { expect(instance).to be_invalid }
         it { expect(instance.errors.to_json).to eq '{"response":["InvalidRegistration"]}' }
       end
@@ -70,8 +77,56 @@ RSpec.describe Notification::Mobile, type: :model do
         before do
           VCR.use_cassette('gcm_send_with_server_error', erb: { key: 'gcmkey', payload: instance.payload }) { instance.notify }
         end
+
         it { expect(instance).to be_invalid }
         it { expect(instance.errors.to_json).to eq '{"response":["body in not exist, possible server error"]}' }
+      end
+    end
+
+    #
+    # ios platform
+    #
+
+    context 'ios platform' do
+      let(:mobile_device_platform) { 'ios' }
+      let(:ios_notification) do
+        notification_params = instance.send :notification_params
+        n = Houston::Notification.new(notification_params.slice(:token, :alert, :badge, :content_available))
+        n.custom_data = notification_params[:payload]
+        n.sound = 'NotificationTone.wav'
+        n
+      end
+
+      before do
+        allow_any_instance_of(GenericPushNotification).to receive(:ios_notification).and_return(ios_notification)
+      end
+
+      context 'success' do
+        before do
+          allow(ios_notification).to receive(:sent?).and_return true
+          instance.notify
+        end
+
+        it { expect(instance).to be_valid }
+        it do
+          expected = { status: :success, unregistered_devices: [] }
+          expect(instance.original_response).to eq expected
+        end
+      end
+
+      context 'error' do
+        before do
+          allow(ios_notification).to receive(:error).and_return Houston::Notification::APNSError.new(2)
+          allow(ios_notification).to receive(:sent?).and_return false
+          instance.notify
+        end
+
+        it { expect(instance).to be_invalid }
+        it { expect(instance.errors.to_json).to eq '{"response":["#\\u003cHouston::Notification::APNSError: Missing device token\\u003e"]}' }
+        it do
+          expected = { error: '#<Houston::Notification::APNSError: Missing device token>', status: :failure, unregistered_devices: [] }
+          expect(instance.original_response).to eq expected
+        end
       end
     end
   end

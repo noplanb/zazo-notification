@@ -56,18 +56,21 @@ class GenericPushNotification
 
   def send_ios
     apns.push(ios_notification)
-    status = ios_notification.sent?
-    Rollbar.error(ios_notification.error, notification: ios_notification) unless status
-    handle_unregistered_ios_devices
-    status
+    if ios_notification.sent?
+      { status: :success }
+    else
+      Rollbar.error(ios_notification.error, notification: ios_notification)
+      { status: :failure, error: ios_notification.error.inspect }
+    end.merge unregistered_ios_devices
   end
 
   def send_android
     GcmServer.send_notification(@token, @payload)
   end
 
-  def handle_unregistered_ios_devices
-    devices = unregistered_devices
-    Rollbar.info('APNS returned non-empty unregistered devices', unregistered_devices: devices) unless devices.empty?
+  def unregistered_ios_devices
+    data = { unregistered_devices: unregistered_devices }
+    Rollbar.info('APNS returned non-empty unregistered devices', data) unless data[:unregistered_devices].empty?
+    data
   end
 end

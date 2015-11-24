@@ -41,7 +41,8 @@ class Notification::Mobile < Notification::Base
   private
 
   def handle_ios_results(results)
-
+    @response = results
+    response[:status] == :failure && self.errors.add(:response, response[:error])
   end
 
   def handle_android_results(results)
