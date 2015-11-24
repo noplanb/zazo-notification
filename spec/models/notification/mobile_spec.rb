@@ -26,16 +26,16 @@ RSpec.describe Notification::Mobile, type: :model do
       it { expect(instance.subject).to eq(mobile_subject) }
     end
 
-    context '#device_build' do
-      it { expect(instance.device_build).to eq(mobile_device_build) }
-    end
-
     context '#device_token' do
       it { expect(instance.device_token).to eq(mobile_device_token) }
     end
 
     context '#device_platform' do
       it { expect(instance.device_platform).to eq(mobile_device_platform) }
+    end
+
+    context '#device_build' do
+      it { expect(instance.device_build).to eq(mobile_device_build) }
     end
 
     context '#payload' do
@@ -52,7 +52,6 @@ RSpec.describe Notification::Mobile, type: :model do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:subject) }
-    it { is_expected.to validate_presence_of(:device_build) }
     it { is_expected.to validate_presence_of(:device_token) }
     it { is_expected.to validate_presence_of(:device_platform) }
     it { is_expected.to validate_presence_of(:payload) }
@@ -76,6 +75,44 @@ RSpec.describe Notification::Mobile, type: :model do
 
         it { expect(instance).to be_invalid }
         it { expect(instance.errors.messages[:payload]).to eq ['should be type of hash'] }
+      end
+    end
+
+    describe 'device build validation' do
+      subject do
+        instance.valid?
+        instance.errors.messages[:device_build]
+      end
+
+      context 'when empty when android' do
+        let(:mobile_device_platform) { 'android' }
+        let(:mobile_device_build) { nil }
+
+        it { is_expected.to be nil }
+        it { expect(instance).to be_valid }
+      end
+
+      context 'when correct on ios' do
+        let(:mobile_device_platform) { 'ios' }
+
+        it { is_expected.to be nil }
+        it { expect(instance).to be_valid }
+      end
+
+      context 'when empty on ios' do
+        let(:mobile_device_platform) { 'ios' }
+        let(:mobile_device_build) { nil }
+
+        it { is_expected.to eq ['is not valid device build'] }
+        it { expect(instance).to be_invalid }
+      end
+
+      context 'when incorrect on ios' do
+        let(:mobile_device_platform) { 'ios' }
+        let(:mobile_device_build) { 'incorrect' }
+
+        it { is_expected.to eq ['is not valid device build'] }
+        it { expect(instance).to be_invalid }
       end
     end
   end

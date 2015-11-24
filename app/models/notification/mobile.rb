@@ -4,10 +4,10 @@ class Notification::Mobile < Notification::Base
   ALLOWED_DEVICE_BUILDS    = %w(dev prod)
 
   attr_reader   :response
-  attr_accessor :subject, :device_build, :device_token, :device_platform, :payload
-  validates     :subject, :device_build, :device_token, :device_platform, :payload, presence: true
+  attr_accessor :subject, :device_token, :device_platform, :payload, :device_build
+  validates     :subject, :device_token, :device_platform, :payload, presence: true
   validates     :device_platform, inclusion: { in: ALLOWED_DEVICE_PLATFORMS, message: 'is not valid device platform' }
-  validates     :device_build, inclusion: { in: ALLOWED_DEVICE_BUILDS, message: 'is not valid device build' }
+  validates_with DeviceBuildValidator
   validates_with PayloadStructureValidator
 
   def self.description
