@@ -1,6 +1,6 @@
 defaults: &defaults
   app_name: Zazo Notification
-  version: 0.2.0
+  version: 0.3.0
   authentication_method: digest
   stub_mobile_number: false
   notification_mailer:

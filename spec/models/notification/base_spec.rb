@@ -7,7 +7,7 @@ RSpec.describe Notification::Base, type: :model do
 
   describe '#params' do
     subject { instance.params }
-    it { is_expected.to eq(foo: 'bar') }
+    it { is_expected.to eq('foo' => 'bar') }
   end
 
   describe '.required_params' do
