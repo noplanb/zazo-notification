@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.3.1
+- :hammer: Fixed rails params by removing `rsense` gem from dependencies
+
 ### v0.3.0
 - :bulb: Implemented Mobile (Android/IOS) notification at /api/v1/notifications/mobile
 

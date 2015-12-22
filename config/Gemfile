@@ -41,8 +41,6 @@ group :development do
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
-  gem 'rsense'
-  gem 'spring'
   gem 'terminal-notifier-guard'
 end
 
