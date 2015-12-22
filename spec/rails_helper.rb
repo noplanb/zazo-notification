@@ -63,3 +63,10 @@ RSpec.configure do |config|
     config.add_formatter :html, File.join(reports_dir, 'rspec', 'rspec.html')
   end
 end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
