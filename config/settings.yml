@@ -10,7 +10,6 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  authentication_method: basic
   stub_mobile_number: true
 
 test:
