@@ -47,6 +47,15 @@ RSpec.describe Notification::Mobile, type: :model do
         }
         expect(instance.payload).to eq expected
       end
+
+      context 'overload host param' do
+        let(:mobile_payload) do
+          { host: 'custom_host',
+            type: 'friend_joined',
+            content: mobile_content }
+        end
+        it { expect(instance.payload['host']).to eq 'custom_host' }
+      end
     end
   end
 
