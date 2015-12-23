@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.3.2
+- :bulb: Added feature to set custom host for mobile payload
+
 ### v0.3.1
 - :hammer: Fixed rails params by removing `rsense` gem from dependencies
 

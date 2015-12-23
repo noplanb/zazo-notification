@@ -62,6 +62,6 @@ class Notification::Mobile < Notification::Base
   end
 
   def payload_with_required_attrs(attrs)
-    attrs.kind_of?(Hash) ? wrap_params(attrs.merge(host: Figaro.env.zazo_domain_name)) : attrs
+    attrs.kind_of?(Hash) ? wrap_params(attrs.reverse_merge('host' => Figaro.env.zazo_domain_name)) : attrs
   end
 end
