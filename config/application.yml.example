@@ -2,6 +2,8 @@ AWS_REGION: us-west-1
 AWS_ACCESS_KEY_ID:
 AWS_SECRET_ACCESS_KEY:
 
+APN_CERTIFICATE_PASSPHRASE: open
+
 api_endpoint: http://zazo-notification.dev
 zazo_domain_name:
 secret_key_base:
