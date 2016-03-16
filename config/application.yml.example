@@ -16,7 +16,6 @@ gcm_uri: https://android.googleapis.com/gcm/send
 
 rollbar_access_token:
 newrelic_license_key:
-newrelic_api_key:
 
 smtp_address: email-smtp.us-east-1.amazonaws.com
 smtp_helo_domain_name: zazoapp.com

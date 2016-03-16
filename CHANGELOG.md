@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.3.3
+- :hammer: Updated APNS certificates
+
 ### v0.3.2
 - :bulb: Added feature to set custom host for mobile payload
 
