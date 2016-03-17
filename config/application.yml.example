@@ -2,6 +2,8 @@ AWS_REGION: us-west-1
 AWS_ACCESS_KEY_ID:
 AWS_SECRET_ACCESS_KEY:
 
+APN_CERTIFICATE_PASSPHRASE: open
+
 api_endpoint: http://zazo-notification.dev
 zazo_domain_name:
 secret_key_base:
@@ -16,7 +18,6 @@ gcm_uri: https://android.googleapis.com/gcm/send
 
 rollbar_access_token:
 newrelic_license_key:
-newrelic_api_key:
 
 smtp_address: email-smtp.us-east-1.amazonaws.com
 smtp_helo_domain_name: zazoapp.com
