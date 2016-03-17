@@ -1,6 +1,7 @@
 # Changelog
 
 ### v0.3.4
+- :hammer: Use specific `aws aws-sdk` gem version (`2.2.12`)
 
 ### v0.3.3
 - :hammer: Updated APNS certificates
