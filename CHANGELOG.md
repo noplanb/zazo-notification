@@ -1,5 +1,7 @@
 # Changelog
 
+### v0.3.5
+
 ### v0.3.4
 - :hammer: Use specific `aws-sdk` gem version (`2.2.12`)
 - :hammer: Removed newrelic library
