@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.3.5
+- :hammer: Fixed dockerfile and wercker deployment
+
 ### v0.3.4
 - :hammer: Use specific `aws-sdk` gem version (`2.2.12`)
 - :hammer: Removed newrelic library
