@@ -1,7 +1,8 @@
 # Changelog
 
 ### v0.3.4
-- :hammer: Use specific `aws aws-sdk` gem version (`2.2.12`)
+- :hammer: Use specific `aws-sdk` gem version (`2.2.12`)
+- :hammer: Removed newrelic library
 
 ### v0.3.3
 - :hammer: Updated APNS certificates

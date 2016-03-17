@@ -46,9 +46,6 @@ deploy:
   after-steps:
     - akelmanson/rollbar-notify:
         access-token: $rollbar_access_token
-    - rafaelverger/newrelic-deployment:
-        api_key: $newrelic_api_key
-        app_name: $app_name ($WERCKER_DEPLOYTARGET_NAME)
     - asux/pretty-slack-notify:
         webhook_url: $slack_url
         channel: devops
