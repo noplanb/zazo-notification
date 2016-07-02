@@ -8,7 +8,6 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'figaro', github: 'fny/figaro', branch: 'elastic-beanstalk-support'
 gem 'pry-rails'
-gem 'puma'
 gem 'rails-api'
 gem 'rollbar'
 gem 'settingslogic'
@@ -17,6 +16,9 @@ gem 'hashie'
 
 gem 'gcm'
 gem 'houston'
+
+gem 'puma'
+gem 'foreman'
 
 group :development, :test do
   gem 'dredd-rack'
