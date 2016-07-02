@@ -10,3 +10,12 @@ COPY . $APP_HOME
 RUN chown www-data:www-data -R $APP_HOME
 
 EXPOSE 80
+
+
+
+
+
+FROM zazo/rails
+
+EXPOSE 80
+CMD bin/start.sh
