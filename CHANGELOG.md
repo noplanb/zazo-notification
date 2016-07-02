@@ -1,5 +1,8 @@
 # Changelog
 
+### v0.3.6
+- :hammer: Fixed docker configuration
+
 ### v0.3.5
 - :hammer: Fixed dockerfile and wercker deployment
 
